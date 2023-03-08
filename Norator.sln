@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norator", "Norator\Norator.csproj", "{3A6DCF70-9C14-4704-B9A0-22E631450CEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Norator", "Norator\Norator.csproj", "{3A6DCF70-9C14-4704-B9A0-22E631450CEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{3717DE27-19C6-458D-901E-12995D441285}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{C5F83CD8-A45C-4620-9AD3-CBB39180A71E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{073C9FBB-2A89-41C9-9D98-85019860CA1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{260CE8B7-2B84-47F7-90A4-D338D42F8DAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{3A6DCF70-9C14-4704-B9A0-22E631450CEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A6DCF70-9C14-4704-B9A0-22E631450CEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A6DCF70-9C14-4704-B9A0-22E631450CEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3717DE27-19C6-458D-901E-12995D441285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3717DE27-19C6-458D-901E-12995D441285}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3717DE27-19C6-458D-901E-12995D441285}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3717DE27-19C6-458D-901E-12995D441285}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5F83CD8-A45C-4620-9AD3-CBB39180A71E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5F83CD8-A45C-4620-9AD3-CBB39180A71E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5F83CD8-A45C-4620-9AD3-CBB39180A71E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5F83CD8-A45C-4620-9AD3-CBB39180A71E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{073C9FBB-2A89-41C9-9D98-85019860CA1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{073C9FBB-2A89-41C9-9D98-85019860CA1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{073C9FBB-2A89-41C9-9D98-85019860CA1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{073C9FBB-2A89-41C9-9D98-85019860CA1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{260CE8B7-2B84-47F7-90A4-D338D42F8DAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{260CE8B7-2B84-47F7-90A4-D338D42F8DAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{260CE8B7-2B84-47F7-90A4-D338D42F8DAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{260CE8B7-2B84-47F7-90A4-D338D42F8DAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
