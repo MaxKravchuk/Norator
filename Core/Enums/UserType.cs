@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Configuration
+namespace Core.Enums
 {
-    internal class EntitiesConfs
+    public enum UserType
     {
+        Admin,
+        Client
     }
 }

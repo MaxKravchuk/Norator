@@ -8,9 +8,9 @@ namespace Core.Enums
 {
     public enum ContentType
     {
-        //ToDO
-        /*
-         * Add different content types
-         */
+        Film,
+        Series,
+        Cartoon,
+        Game
     }
 }

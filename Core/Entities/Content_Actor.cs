@@ -8,9 +8,9 @@ namespace Core.Entities
 {
     public class Content_Actor
     {
-        //ToDo
-        /*
-         * Add Content - Actor many-to-many config
-         */
+        public int ContentId { get; set; }
+        public Content Content { get; set; }
+        public int ActorId { get; set; }
+        public Actor Actor { get; set; }
     }
 }
