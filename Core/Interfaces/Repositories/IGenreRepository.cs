@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Repositories
 {
-    public interface IActorRepository : IRepository<Actor>
+    public interface IGenreRepository : IRepository<Genre>
     {
 
     }
