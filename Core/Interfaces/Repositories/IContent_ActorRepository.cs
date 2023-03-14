@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Interfaces
+namespace Core.Interfaces.Repositories
 {
-    internal class InterfacesHere
+    internal class IContent_ActorRepository
     {
     }
 }
