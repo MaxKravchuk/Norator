@@ -6,11 +6,23 @@ using System.Threading.Tasks;
 
 namespace Core.Exceptions
 {
-    public class UnauthorizedExeption : Exception
+    public class UnauthorizedException : Exception
     {
-        //ToDo
-        /*
-         * Add unauthorized implementation
-         */
+        public new string Message { get; set; } = string.Empty;
+
+        public UnauthorizedException()
+        {
+            Message = "Access is denied due to invalid credentials";
+        }
+
+        public UnauthorizedException(string message) : base(message)
+        {
+            Message = message;
+        }
+
+        public UnauthorizedException(string message, Exception inner) : base(message, inner)
+        {
+            Message = message;
+        }
     }
 }
