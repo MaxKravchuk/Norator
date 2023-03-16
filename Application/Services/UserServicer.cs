@@ -97,25 +97,8 @@ namespace Application.Services
             return user;
         }
 
-        public async Task UpdateUserAsync(User user, IEnumerable<int> contentsId)
+        public async Task UpdateUserAsync(User user)
         {
-            var exContent = await _user_ContentRepository.GetAsync(
-                filter: con => con.UserId == user.Id);
-            foreach (var content in exContent)
-            {
-                _user_ContentRepository.Delete(content);
-            }
-
-            foreach (var contentId in contentsId)
-            {
-                user.User_Contents.Add(new User_Content()
-                {
-                    User = user,
-                    Content = await _contenService.GetContentByIdAsync(contentId)
-                });
-            }
-            await _user_ContentRepository.SaveChangesAsync();
-
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
         }
