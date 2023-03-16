@@ -1,5 +1,7 @@
+using Application.Configuration;
 using DataAccess.Context;
 using DataAccess.Repositories.Configuration;
+
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,7 @@ builder.Services.AddDbContext<NoratorContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddApplicationRepositories();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
