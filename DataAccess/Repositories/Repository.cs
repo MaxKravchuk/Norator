@@ -110,7 +110,7 @@ namespace DataAccess.Repositories
             return query.FirstOrDefault();
         }
 
-        public async Task<T?> GetById(int id, string includeProperties = "")
+        public async Task<T?> GetByIdAsync(int id, string includeProperties = "")
         {
             if (string.IsNullOrEmpty(includeProperties))
             {
@@ -127,6 +127,25 @@ namespace DataAccess.Repositories
 
             return await set.FirstOrDefaultAsync(entity => entity == result);
         }
+
+        public async Task<T?> GetByNameAsync(string name, string includeProperties = "")
+        {
+            if (string.IsNullOrEmpty(includeProperties))
+            {
+                return await _noratorContext.Set<T>().FindAsync(name);
+            }
+
+            var result = await _noratorContext.Set<T>().FindAsync(name);
+
+            IQueryable<T> set = _noratorContext.Set<T>();
+
+            set = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Aggregate(set, (current, includeProperty)
+                        => current.Include(includeProperty));
+
+            return await set.FirstOrDefaultAsync(entity => entity == result);
+        }
+
 
         public void Delete(T entity)
         {

@@ -12,8 +12,8 @@ namespace Core.Interfaces.Services
         Task<Content> GetContentByIdAsync(int id);
         Task<Content> GetContentByNameAsync(string name);
         Task<IEnumerable<Content>> GetContentsAsync();
-        Task CreateContentAsync(Content content);
-        Task UpdateContentAsync(Content content);
+        Task CreateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId);
+        Task UpdateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId);
         Task DeleteContentAsync(int id);
 
     }

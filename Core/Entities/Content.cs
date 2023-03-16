@@ -14,7 +14,7 @@ namespace Core.Entities
         public ContentType ContentType { get; set; }
         public DateTime ReleaseDate { get; set; }
         public int NumberOfSubscribers { get; set; }
-        public IEnumerable<Content_Genre> Content_Genres { get; set; }
+        public ICollection<Content_Genre> Content_Genres { get; set; }
         public ICollection<Content_Actor> Content_Actors { get; set; }
         public ICollection<User_Content> User_Contents { get; set; }
     }

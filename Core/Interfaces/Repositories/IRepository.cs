@@ -24,7 +24,9 @@ namespace Core.Interfaces.Repositories
             int? take = null, int skip = 0,
             bool asNoTracking = false);
 
-        Task<T?> GetById(int id, string includeProperties = "");
+        Task<T?> GetByIdAsync(int id, string includeProperties = "");
+
+        Task<T?> GetByNameAsync(string name, string includeProperties = "");
 
         Task<T?> GetFirstOrDefaultAsync(
             Expression<Func<T, bool>>? filter = null,
