@@ -40,7 +40,7 @@ namespace Application.Services
 
             if(actor == null)
             {
-                throw new NotFoundExeption();
+                throw new NotFoundException();
             }
 
             return actor;
@@ -52,7 +52,7 @@ namespace Application.Services
 
             if (actor == null)
             {
-                throw new NotFoundExeption();
+                throw new NotFoundException();
             }
 
             return actor;

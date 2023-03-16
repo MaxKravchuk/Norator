@@ -70,7 +70,7 @@ namespace Application.Services
 
             if(content == null)
             {
-                throw new NotFoundExeption();
+                throw new NotFoundException();
             }
 
             return content;
@@ -83,12 +83,11 @@ namespace Application.Services
 
             if (content == null)
             {
-                throw new NotFoundExeption();
+                throw new NotFoundException();
             }
 
             return content;
         }
-
         public async Task<IEnumerable<Content>> GetContentsAsync()
         {
             var contents = await _contentRepository.GetAsync(

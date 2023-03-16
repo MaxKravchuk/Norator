@@ -14,10 +14,42 @@ namespace Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IContenService _contenService;
+        private readonly IUser_ContentRepository _user_ContentRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(
+            IUserRepository userRepository,
+            IContenService contenService,
+            IUser_ContentRepository user_ContentRepository)
         {
             _userRepository = userRepository;
+            _contenService = contenService;
+            _user_ContentRepository = user_ContentRepository;
+
+        }
+
+        public async Task AddContent(int userId, int contentId)
+        {
+            var user = await GetUserByIdAsync(userId);
+
+            user.User_Contents.Add(new User_Content()
+            {
+                Content = await _contenService.GetContentByIdAsync(contentId),
+                User = user
+            });
+
+            await _userRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteContent(int userId, int contentId)
+        {
+           var content = await _user_ContentRepository.GetUserContentByUserAndContentId(userId, contentId);
+            if(content == null)
+            {
+                throw new NotFoundException();
+            }
+            _user_ContentRepository.Delete(content);
+            await _user_ContentRepository.SaveChangesAsync();
         }
 
         public async Task CreateUserAsync(User user)
@@ -47,7 +79,7 @@ namespace Application.Services
 
             if (user == null)
             {
-                throw new NotFoundExeption();
+                throw new NotFoundException();
             }
 
             return user;
@@ -59,16 +91,35 @@ namespace Application.Services
 
             if (user == null)
             {
-                throw new NotFoundExeption();
+                throw new NotFoundException();
             }
 
             return user;
         }
 
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(User user, IEnumerable<int> contentsId)
         {
+            var exContent = await _user_ContentRepository.GetAsync(
+                filter: con => con.UserId == user.Id);
+            foreach (var content in exContent)
+            {
+                _user_ContentRepository.Delete(content);
+            }
+
+            foreach (var contentId in contentsId)
+            {
+                user.User_Contents.Add(new User_Content()
+                {
+                    User = user,
+                    Content = await _contenService.GetContentByIdAsync(contentId)
+                });
+            }
+            await _user_ContentRepository.SaveChangesAsync();
+
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
         }
+
+
     }
 }

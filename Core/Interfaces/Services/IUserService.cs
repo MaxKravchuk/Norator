@@ -15,6 +15,7 @@ namespace Core.Interfaces.Services
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);
-
+        Task AddContent(int userId, int contentId);
+        Task DeleteContent(int userId, int contentId);
     }
 }

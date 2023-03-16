@@ -9,5 +9,6 @@ namespace Core.Interfaces.Repositories
 {
     public interface IUser_ContentRepository : IRepository<User_Content>
     {
+        Task<User_Content> GetUserContentByUserAndContentId(int userId, int contentId);
     }
 }
