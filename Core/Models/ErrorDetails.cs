@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,11 @@ namespace Core.Models
 {
     public class ErrorDetails
     {
-        //ToDo
-        /*
-         * Add ErrorDetails implementation
-         */
+        public int StatusCode { get; set; }
+        public string? Message { get; set; }
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }
