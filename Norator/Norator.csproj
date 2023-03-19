@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -17,12 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configuration\" />
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <Folder Include="Configuration\" />
   </ItemGroup>
 
 </Project>

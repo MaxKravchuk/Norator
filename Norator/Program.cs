@@ -3,6 +3,7 @@ using DataAccess.Context;
 using DataAccess.Repositories.Configuration;
 
 using Microsoft.EntityFrameworkCore;
+using Norator.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
+app.AddApplicationMiddleware();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
