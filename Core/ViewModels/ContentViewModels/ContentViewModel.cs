@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.ViewModels.ContentViewModel
+namespace Core.ViewModels.ContentViewModels
 {
     public class ContentViewModel
     {
