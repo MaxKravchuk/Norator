@@ -9,7 +9,11 @@
   <ItemGroup>
     <Folder Include="AutoMapper\UserAutoMappers\" />
     <Folder Include="AutoMapper\GenreAutoMappers\" />
-    <Folder Include="AutoMapper\ContextAutoMappers\" />
+    <Folder Include="AutoMapper\ContentAutoMappers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
   </ItemGroup>
 
   <ItemGroup>

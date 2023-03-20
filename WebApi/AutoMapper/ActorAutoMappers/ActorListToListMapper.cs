@@ -9,24 +9,19 @@ using WebApi.AutoMapper.Interfaces;
 
 namespace WebApi.AutoMapper.ActorAutoMappers
 {
-    public interface ActorListToListMapper : IEnumerableViewModelMapper<IEnumerable<Actor>, IEnumerable<ActorViewModel>>
+    public class ActorListToListMapper : IEnumerableViewModelMapper<IEnumerable<Actor>, IEnumerable<ActorReadViewModel>>
     {
-        public IEnumerable<ActorViewModel> Map(IEnumerable<Actor> source)
+        private readonly IViewModelMapper<Actor, ActorReadViewModel> _readMapper;
+
+        public ActorListToListMapper(IViewModelMapper<Actor, ActorReadViewModel> viewModelMapper)
         {
-            var dest = source.Select(GetAnimalViewModel).ToList();
-            return dest;
+            _readMapper = viewModelMapper;
         }
 
-        private ActorViewModel GetAnimalViewModel(Actor actor)
+        public IEnumerable<ActorReadViewModel> Map(IEnumerable<Actor> source)
         {
-            var actorViewModel = new ActorViewModel()
-            {
-                Id = actor.Id,
-                Name = actor.Name,
-                DateOfBirth = actor.DateOfBirth,
-            };
-
-            return actorViewModel;
+            var readViewModels = source.Select(actor => _readMapper.Map(actor));
+            return readViewModels;
         }
     }
 }

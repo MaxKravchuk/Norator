@@ -10,16 +10,16 @@ using WebApi.AutoMapper.Interfaces;
 
 namespace WebApi.AutoMapper.ActorAutoMappers
 {
-    public class ActorReadMapper : IViewModelMapper<Actor, ActorViewModel>
+    public class ActorReadMapper : IViewModelMapper<Actor, ActorReadViewModel>
     {
-        private readonly IViewModelMapper<IEnumerable<Content_Actor>, IEnumerable<ContentViewModel>> _contentMapper;
+        private readonly IEnumerableViewModelMapper<IEnumerable<Content_Actor>, IEnumerable<ContentActorViewModel>> _contentMapper;
 
-        public ActorReadMapper(IViewModelMapper<IEnumerable<Content_Actor>, IEnumerable<ContentViewModel>> contentMapper)
+        public ActorReadMapper(IEnumerableViewModelMapper<IEnumerable<Content_Actor>, IEnumerable<ContentActorViewModel>> contentMapper)
         {
             _contentMapper = contentMapper;
         }
 
-        public ActorViewModel Map(Actor source)
+        public ActorReadViewModel Map(Actor source)
         {
             var actorReadViewModel = new ActorReadViewModel
             {
