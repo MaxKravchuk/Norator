@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApi.Validators
+namespace Core.ViewModels.ActorViewModels
 {
-    internal class ValidationHere
+    public class ActorCreateViewModel : ActorViewModel
     {
     }
 }

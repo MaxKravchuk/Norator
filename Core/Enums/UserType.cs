@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services
+namespace Core.Enums
 {
-    sealed class ServicesHere
+    public enum UserType
     {
+        Admin,
+        Client
     }
 }

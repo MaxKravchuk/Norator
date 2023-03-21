@@ -8,9 +8,9 @@ namespace Core.Entities
 {
     public class User_Content
     {
-        //ToDo
-        /*
-         * Add User - Content many-to-many config
-         */
+        public int UserId { get; set; }
+        public User User { get; set; }
+        public int ContentId { get; set; }
+        public Content Content { get; set; }
     }
 }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Configuration
+namespace Core.ViewModels.GenreViewModels
 {
-    internal class EntitiesConfs
+    public class GenreReadViewModel : GenreViewModel
     {
+        public int Id { get; set; }
     }
 }

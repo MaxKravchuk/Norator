@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.ViewModels
+namespace Core.ViewModels.GenreViewModels
 {
-    internal class AllViewModels
+    public class GenreViewModel
     {
+        public string Name { get; set; }
     }
 }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Interfaces
+namespace Core.ViewModels.UserViewModels
 {
-    internal class InterfacesHere
+    public class UserReadListViewModel : UserViewModel
     {
+        public int Id { get; set; }
     }
 }
