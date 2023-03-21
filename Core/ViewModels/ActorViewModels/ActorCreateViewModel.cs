@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.ViewModels.GenreViewModels
+namespace Core.ViewModels.ActorViewModels
 {
-    public class GenreViewModel
+    public class ActorCreateViewModel : ActorViewModel
     {
-        public string Name { get; set; }
     }
 }

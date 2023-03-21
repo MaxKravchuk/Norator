@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Core.ViewModels.ActorViewModels
 {
-    public class ActorViewModel
+    public class ActorUpdateViewModel : ActorViewModel
     {
-        public string? Name { get; set; }
-        public DateTime? DateOfBirth { get; set; }
+        public int Id { get; set; }
+        public IEnumerable<int> ContentIds { get; set; } = new List<int>();
     }
 }

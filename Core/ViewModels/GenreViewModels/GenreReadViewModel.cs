@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApi.Validators
+namespace Core.ViewModels.GenreViewModels
 {
-    internal class ValidationHere
+    public class GenreReadViewModel : GenreViewModel
     {
+        public int Id { get; set; }
     }
 }

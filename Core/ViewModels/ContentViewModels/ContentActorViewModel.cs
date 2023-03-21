@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Core.ViewModels.ContentViewModels
 {
-    public class ContentViewModel
+    public class ContentActorViewModel
     {
+        public int Id { get; set; }
         public string? Name { get; set; }
-        public string ContentType { get; set; }
-        public DateTime ReleaseDate { get; set; }
     }
 }

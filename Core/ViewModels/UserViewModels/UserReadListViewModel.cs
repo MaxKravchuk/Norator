@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApi.Controllers
+namespace Core.ViewModels.UserViewModels
 {
-    internal class ControllersHere
+    public class UserReadListViewModel : UserViewModel
     {
+        public int Id { get; set; }
     }
 }
