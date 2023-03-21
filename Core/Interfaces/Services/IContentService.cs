@@ -10,7 +10,7 @@ namespace Core.Interfaces.Services
     public interface IContenService
     {
         Task<Content> GetContentByIdAsync(int id);
-        Task<Content> GetContentByNameAsync(string name);
+        Task<IEnumerable<Content>> GetContentByNameAsync(string name);
         Task<IEnumerable<Content>> GetContentsAsync();
         Task CreateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId);
         Task UpdateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId);

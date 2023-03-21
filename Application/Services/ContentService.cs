@@ -76,10 +76,11 @@ namespace Application.Services
             return content;
         }
 
-        public async Task<Content> GetContentByNameAsync(string name)
+        public async Task<IEnumerable<Content>> GetContentByNameAsync(string name)
         {
-            var content = await _contentRepository.GetByNameAsync(name,
+            var content = await _contentRepository.GetAsync(
                 includeProperties: "Content_Genres.Genre, Content_Actors.Actor");
+            var result = content.Where(c => c.Name == name);
 
             if (content == null)
             {

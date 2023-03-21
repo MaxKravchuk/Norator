@@ -10,7 +10,7 @@ namespace Core.Interfaces.Services
     public interface IUserService
     {
         Task<User> GetUserByIdAsync(int id);
-        Task<User> GetUserByNameAsync(string name);
+        Task<IEnumerable<User>> GetUserByNameAsync(string name);
         Task<IEnumerable<User>> GetUserAsync();
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(User user);

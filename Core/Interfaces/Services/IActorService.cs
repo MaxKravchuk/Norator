@@ -10,7 +10,7 @@ namespace Core.Interfaces.Services
     public interface IActorService
     {
         Task<Actor> GetActorByIdAsync(int id);
-        Task<Actor> GetActorByNameAsync(string name);
+        Task<IEnumerable<Actor>> GetActorByNameAsync(string name);
         Task<IEnumerable<Actor>> GetActorsAsync();
         Task CreateActorAsync(Actor actor);
         Task UpdateActorAsync(Actor actor);

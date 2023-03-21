@@ -26,8 +26,6 @@ namespace Core.Interfaces.Repositories
 
         Task<T?> GetByIdAsync(int id, string includeProperties = "");
 
-        Task<T?> GetByNameAsync(string name, string includeProperties = "");
-
         Task<T?> GetFirstOrDefaultAsync(
             Expression<Func<T, bool>>? filter = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,

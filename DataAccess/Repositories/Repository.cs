@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -127,26 +128,6 @@ namespace DataAccess.Repositories
 
             return await set.FirstOrDefaultAsync(entity => entity == result);
         }
-
-        public async Task<T?> GetByNameAsync(string name, string includeProperties = "")
-        {
-            if (string.IsNullOrEmpty(includeProperties))
-            {
-                return await _noratorContext.Set<T>().FindAsync(name);
-            }
-
-            var result = await _noratorContext.Set<T>().FindAsync(name);
-
-            IQueryable<T> set = _noratorContext.Set<T>();
-
-            set = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Aggregate(set, (current, includeProperty)
-                        => current.Include(includeProperty));
-
-            return await set.FirstOrDefaultAsync(entity => entity == result);
-        }
-
-
         public void Delete(T entity)
         {
             if (_noratorContext.Entry(entity).State == EntityState.Detached)

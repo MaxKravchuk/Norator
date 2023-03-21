@@ -46,16 +46,17 @@ namespace Application.Services
             return actor;
         }
 
-        public async Task<Actor> GetActorByNameAsync(string name)
+        public async Task<IEnumerable<Actor>> GetActorByNameAsync(string name)
         {
-            var actor = await _actorRepository.GetByNameAsync(name);
+            var actors = await _actorRepository.GetAsync(includeProperties: "Content_Actors.Content");
+            var result = actors.Where(a => a.Name.Contains(name));
 
-            if (actor == null)
+            if (result == null)
             {
                 throw new NotFoundException();
             }
 
-            return actor;
+            return result;
         }
 
         public async Task<IEnumerable<Actor>> GetActorsAsync()

@@ -85,16 +85,17 @@ namespace Application.Services
             return user;
         }
 
-        public async Task<User> GetUserByNameAsync(string name)
+        public async Task<IEnumerable<User>> GetUserByNameAsync(string name)
         {
-            var user = await _userRepository.GetByNameAsync(name);
+            var user = await _userRepository.GetAsync();
+            var result = user.Where(u => u.NickName == name);
 
-            if (user == null)
+            if (result == null)
             {
                 throw new NotFoundException();
             }
 
-            return user;
+            return result;
         }
 
         public async Task UpdateUserAsync(User user)

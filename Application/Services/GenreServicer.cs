@@ -51,16 +51,17 @@ namespace Application.Services
             return genre;
         }
 
-        public async Task<Genre> GetGenreByNameAsync(string name)
+        public async Task<IEnumerable<Genre>> GetGenreByNameAsync(string name)
         {
-            var genre = await _genreRepository.GetByNameAsync(name);
+            var genre = await _genreRepository.GetAsync();
+            var result = genre.Where(g => g.Name == name);
 
-            if (genre == null)
+            if (result == null)
             {
                 throw new Exception();
             }
 
-            return genre;
+            return result;
         }
 
         public async Task UpdateGenreAsync(Genre genre)

@@ -10,7 +10,7 @@ namespace Core.Interfaces.Services
     public interface IGenreService
     {
         Task<Genre> GetGenreByIdAsync(int id);
-        Task<Genre> GetGenreByNameAsync(string name);
+        Task<IEnumerable<Genre>> GetGenreByNameAsync(string name);
         Task<IEnumerable<Genre>> GetGenreAsync();
         Task CreateGenreAsync(Genre genre);
         Task UpdateGenreAsync(Genre genre);

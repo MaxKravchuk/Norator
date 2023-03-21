@@ -53,6 +53,14 @@ namespace WebApi.Controllers
             return viewModel;
         }
 
+        [HttpGet("{name}")]
+        public async Task<IEnumerable<ActorReadViewModel>> GetByNameAsync([FromRoute] string name)
+        {
+            var actor = await _actorService.GetActorByNameAsync(name);
+            var viewModel = _readListMapper.Map(actor);
+            return viewModel;
+        }
+
         [HttpPost("create")]
         public async Task CreateAsync([FromBody] ActorCreateViewModel actorVM)
         {
