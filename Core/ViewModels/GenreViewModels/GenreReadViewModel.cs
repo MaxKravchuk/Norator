@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.ViewModels.GenreViewModels
 {
-    public class GenreViewModel
+    public class GenreReadViewModel : GenreViewModel
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
     }
 }

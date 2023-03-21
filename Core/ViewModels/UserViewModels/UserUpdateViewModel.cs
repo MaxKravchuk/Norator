@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Core.ViewModels.UserViewModels
 {
-    public class UserViewModel
+    public class UserUpdateViewModel : UserViewModel
     {
-        public string NickName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -9,10 +9,8 @@ namespace Core.ViewModels.ContentViewModels
 {
     public class ContentViewModel
     {
-        public int Id { get; set; }
         public string? Name { get; set; }
         public string ContentType { get; set; }
         public DateTime ReleaseDate { get; set; }
-        public int NumberOfSubscribers { get; set; }
     }
 }

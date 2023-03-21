@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.ViewModels.GenreViewModels
+namespace Core.ViewModels.UserViewModels
 {
-    public class GenreViewModel
+    public class UserReadListViewModel : UserViewModel
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
     }
 }

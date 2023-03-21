@@ -17,23 +17,23 @@ namespace WebApi.Controllers
     public class ActorController : ControllerBase
     {
         private readonly IActorService _actorService;
-        //private readonly IViewModelMapper<ActorCreateViewModel, Actor> _actorCreateVM;
-        //private readonly IViewModelMapper<ActorUpdateMapper, Actor> _actorUpdateVM;
-        //private readonly IViewModelMapper<Actor, ActorReadMapper> _actorVMMapper;
+        private readonly IViewModelMapper<ActorCreateViewModel, Actor> _actorCreateVM;
+        private readonly IViewModelMapper<ActorUpdateViewModel, Actor> _actorUpdateVM;
+        private readonly IViewModelMapper<Actor, ActorReadViewModel> _actorVMMapper;
         private readonly IEnumerableViewModelMapper<IEnumerable<Actor>, IEnumerable<ActorReadViewModel>> _readListMapper;
 
         public ActorController(
             IActorService actorService,
-        //    IViewModelMapper<ActorCreateViewModel, Actor> actorCreateVM,
-        //    IViewModelMapper<ActorUpdateMapper, Actor> actorUpdateVM,
-        //    IViewModelMapper<Actor, ActorReadMapper> actorVMMapper,
+            IViewModelMapper<ActorCreateViewModel, Actor> actorCreateVM,
+            IViewModelMapper<ActorUpdateViewModel, Actor> actorUpdateVM,
+            IViewModelMapper<Actor, ActorReadViewModel> actorVMMapper,
             IEnumerableViewModelMapper<IEnumerable<Actor>, IEnumerable<ActorReadViewModel>> readListMapper
             )
         {
-          //  _actorCreateVM = actorCreateVM;
-          //  _actorUpdateVM = actorUpdateVM; 
+            _actorCreateVM = actorCreateVM;
+            _actorUpdateVM = actorUpdateVM; 
             _readListMapper = readListMapper;
-          //  _actorVMMapper = actorVMMapper;
+            _actorVMMapper = actorVMMapper;
             _actorService = actorService;
         }
 
