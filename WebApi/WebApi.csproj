@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="AutoMapper\UserAutoMappers\" />
     <Folder Include="AutoMapper\GenreAutoMappers\" />
-    <Folder Include="AutoMapper\ContentAutoMappers\" />
   </ItemGroup>
 
   <ItemGroup>

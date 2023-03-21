@@ -36,7 +36,7 @@ namespace Application.Services
 
         public async Task<Actor> GetActorByIdAsync(int id)
         {
-            var actor = await _actorRepository.GetByIdAsync(id);
+            var actor = await _actorRepository.GetByIdAsync(id, includeProperties: "Content_Actors.Content");
 
             if(actor == null)
             {

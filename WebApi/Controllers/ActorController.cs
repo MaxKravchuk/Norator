@@ -12,7 +12,7 @@ using WebApi.AutoMapper.Interfaces;
 
 namespace WebApi.Controllers
 {
-    [Route("api/actors")]
+    [Route("api/actor")]
     [ApiController]
     public class ActorController : ControllerBase
     {
@@ -31,18 +31,46 @@ namespace WebApi.Controllers
             )
         {
             _actorCreateVM = actorCreateVM;
-            _actorUpdateVM = actorUpdateVM; 
+            _actorUpdateVM = actorUpdateVM;
             _readListMapper = readListMapper;
             _actorVMMapper = actorVMMapper;
             _actorService = actorService;
         }
 
-        [HttpGet]
+        [HttpGet("getall")]
         public async Task<IEnumerable<ActorReadViewModel>> GetAsync()
         {
             var actors = await _actorService.GetActorsAsync();
             var viewModels = _readListMapper.Map(actors);
             return viewModels;
+        }
+
+        [HttpGet("{id:int:min(1)}")]
+        public async Task<ActorReadViewModel> GetByIdAsync([FromRoute] int id)
+        {
+            var actor = await _actorService.GetActorByIdAsync(id);
+            var viewModel = _actorVMMapper.Map(actor);
+            return viewModel;
+        }
+
+        [HttpPost("create")]
+        public async Task CreateAsync([FromBody] ActorCreateViewModel actorVM)
+        {
+            var actorToCreate = _actorCreateVM.Map(actorVM);
+            await _actorService.CreateActorAsync(actorToCreate);
+        }
+
+        [HttpPut("update")]
+        public async Task UpdateAsync([FromBody] ActorUpdateViewModel actorVM)
+        {
+            var actorToUpdate = _actorUpdateVM.Map(actorVM);
+            await _actorService.UpdateActorAsync(actorToUpdate);
+        }
+
+        [HttpDelete("{id:int:min(1)}")]
+        public async Task DeleteAsync([FromRoute] int id)
+        {
+           await _actorService.DeleteActorAsync(id);
         }
     }
 }
