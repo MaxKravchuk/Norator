@@ -1,5 +1,8 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Services;
+using Core.Paginator;
+using Core.Paginator.Parameters;
+using Core.ViewModels;
 using Core.ViewModels.ActorViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,28 +23,28 @@ namespace WebApi.Controllers
         private readonly IViewModelMapper<ActorCreateViewModel, Actor> _actorCreateVM;
         private readonly IViewModelMapper<ActorUpdateViewModel, Actor> _actorUpdateVM;
         private readonly IViewModelMapper<Actor, ActorReadViewModel> _actorVMMapper;
-        private readonly IEnumerableViewModelMapper<IEnumerable<Actor>, IEnumerable<ActorReadViewModel>> _readListMapper;
+        private readonly IViewModelMapper<PagedList<Actor>, PagedReadViewModel<ActorListReadViewModel>> _pagedListMapper;
 
         public ActorController(
             IActorService actorService,
             IViewModelMapper<ActorCreateViewModel, Actor> actorCreateVM,
             IViewModelMapper<ActorUpdateViewModel, Actor> actorUpdateVM,
             IViewModelMapper<Actor, ActorReadViewModel> actorVMMapper,
-            IEnumerableViewModelMapper<IEnumerable<Actor>, IEnumerable<ActorReadViewModel>> readListMapper
+            IViewModelMapper<PagedList<Actor>, PagedReadViewModel<ActorListReadViewModel>> pagedListMapper
             )
         {
             _actorCreateVM = actorCreateVM;
             _actorUpdateVM = actorUpdateVM;
-            _readListMapper = readListMapper;
             _actorVMMapper = actorVMMapper;
             _actorService = actorService;
+            _pagedListMapper = pagedListMapper;
         }
 
         [HttpGet("getall")]
-        public async Task<IEnumerable<ActorReadViewModel>> GetAsync()
+        public async Task<PagedReadViewModel<ActorListReadViewModel>> GetAsync([FromQuery] ActorParameters actorParameters)
         {
-            var actors = await _actorService.GetActorsAsync();
-            var viewModels = _readListMapper.Map(actors);
+            var actors = await _actorService.GetActorsAsync(actorParameters);
+            var viewModels = _pagedListMapper.Map(actors);
             return viewModels;
         }
 
@@ -50,14 +53,6 @@ namespace WebApi.Controllers
         {
             var actor = await _actorService.GetActorByIdAsync(id);
             var viewModel = _actorVMMapper.Map(actor);
-            return viewModel;
-        }
-
-        [HttpGet("{name}")]
-        public async Task<IEnumerable<ActorReadViewModel>> GetByNameAsync([FromRoute] string name)
-        {
-            var actor = await _actorService.GetActorByNameAsync(name);
-            var viewModel = _readListMapper.Map(actor);
             return viewModel;
         }
 

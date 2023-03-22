@@ -23,12 +23,18 @@ namespace DataAccess.Configuration
                 .IsRequired();
 
             builder
-                .Property(x => x.ContentType)
+                .Property(x => x.ContentCategoryId)
                 .IsRequired();
 
             builder
                 .Property(x => x.ReleaseDate)
                 .IsRequired();
+
+            builder
+                .HasOne<ContentCategory>(content=>content.ContentCategory)
+                .WithMany(contentType=>contentType.Contents)
+                .HasForeignKey(content=>content.ContentCategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

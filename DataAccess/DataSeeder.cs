@@ -19,11 +19,20 @@ namespace DataAccess
                 new Actor(){Id =2, Name = "Johnny Depp", DateOfBirth = new DateTime(1963,6,9)}
             });
 
+            builder.Entity<ContentCategory>().HasData(new[]
+            {
+                new ContentCategory(){Id =1,Name = "Film"},
+                new ContentCategory(){Id =2,Name = "Series"},
+                new ContentCategory(){Id =3,Name = "Cartoon"},
+                new ContentCategory(){Id =4,Name = "Game"},
+                new ContentCategory(){Id =5,Name = "Book"}
+            });
+
             builder.Entity<Content>().HasData(new[]
             {
-                new Content(){Id = 1,Name = "Don`t Look Up", ContentType = Core.Enums.ContentType.Film, NumberOfSubscribers = 1,
+                new Content(){Id = 1,Name = "Don`t Look Up", ContentCategoryId = 1, NumberOfSubscribers = 1,
                     ReleaseDate = new DateTime(2021)},
-                new Content(){Id = 2,Name = "Charlie and the Chocolate Factory", ContentType = Core.Enums.ContentType.Film, NumberOfSubscribers = 0,
+                new Content(){Id = 2,Name = "Charlie and the Chocolate Factory", ContentCategoryId = 1, NumberOfSubscribers = 0,
                     ReleaseDate = new DateTime(2005)}
             });
 
