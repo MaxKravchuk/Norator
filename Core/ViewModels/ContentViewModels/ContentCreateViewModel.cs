@@ -8,6 +8,7 @@ namespace Core.ViewModels.ContentViewModels
 {
     public class ContentCreateViewModel : ContentViewModel
     {
+        public int ContentCategoryId { get; set; }
         public IEnumerable<int> Genres { get; set; } = new List<int>();
     }
 }

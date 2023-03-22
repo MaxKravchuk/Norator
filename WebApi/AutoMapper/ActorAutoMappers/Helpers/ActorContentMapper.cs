@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApi.AutoMapper.Interfaces;
 
-namespace WebApi.AutoMapper.ActorAutoMappers
+namespace WebApi.AutoMapper.ActorAutoMappers.Helpers
 {
     public class ActorContentMapper : IEnumerableViewModelMapper<IEnumerable<Content_Actor>, IEnumerable<ContentActorViewModel>>
     {

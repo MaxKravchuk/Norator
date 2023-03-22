@@ -1,5 +1,9 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Services;
+using Core.Paginator;
+using Core.Paginator.Parameters;
+using Core.ViewModels;
+using Core.ViewModels.ActorViewModels;
 using Core.ViewModels.ContentViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,21 +23,29 @@ namespace WebApi.Controllers
         private readonly IViewModelMapper<ContentCreateViewModel, Content> _createMapper;
         private readonly IViewModelMapper<ContentUpdateViewModel, Content> _updateMapper;
         private readonly IViewModelMapper<Content, ContentReadViewModel> _readMapper;
-        private readonly IEnumerableViewModelMapper<IEnumerable<Content>, IEnumerable<ContentListReadViewModel>> _listReadMapper;
+        private readonly IViewModelMapper<PagedList<Content>, PagedReadViewModel<ContentListReadViewModel>> _pagedListMapper;
 
         public ContentController(
             IContenService contenService,
             IViewModelMapper<ContentCreateViewModel, Content> createMapper,
             IViewModelMapper<ContentUpdateViewModel, Content> updateMapper,
             IViewModelMapper<Content, ContentReadViewModel> readMapper,
-            IEnumerableViewModelMapper<IEnumerable<Content>, IEnumerable<ContentListReadViewModel>> listReadMapper
+            IViewModelMapper<PagedList<Content>, PagedReadViewModel<ContentListReadViewModel>> pagedListMapper
             )
         {
             _contenService = contenService;
             _createMapper = createMapper;
             _updateMapper = updateMapper;
             _readMapper = readMapper;
-            _listReadMapper = listReadMapper;
+            _pagedListMapper = pagedListMapper;
+        }
+
+        [HttpGet("getall")]
+        public async Task<PagedReadViewModel<ContentListReadViewModel>> GetAsync([FromQuery] ContentParameters contentParameters)
+        {
+            var contents = await _contenService.GetContentsAsync(contentParameters);
+            var viewModels = _pagedListMapper.Map(contents);
+            return viewModels;
         }
     }
 }

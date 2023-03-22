@@ -40,7 +40,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Actors");
+                    b.ToTable("Actors", (string)null);
 
                     b.HasData(
                         new
@@ -83,7 +83,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ContentCategoryId");
 
-                    b.ToTable("Contents");
+                    b.ToTable("Contents", (string)null);
 
                     b.HasData(
                         new
@@ -116,7 +116,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ContentId");
 
-                    b.ToTable("ContentActors");
+                    b.ToTable("ContentActors", (string)null);
 
                     b.HasData(
                         new
@@ -143,7 +143,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ContentId");
 
-                    b.ToTable("ContentGenres");
+                    b.ToTable("ContentGenres", (string)null);
 
                     b.HasData(
                         new
@@ -192,7 +192,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContentCategories");
+                    b.ToTable("ContentCategories", (string)null);
 
                     b.HasData(
                         new
@@ -244,7 +244,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exceptions");
+                    b.ToTable("Exceptions", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Genre", b =>
@@ -262,7 +262,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
 
                     b.HasData(
                         new
@@ -318,7 +318,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
@@ -351,7 +351,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ContentId");
 
-                    b.ToTable("UserContents");
+                    b.ToTable("UserContents", (string)null);
 
                     b.HasData(
                         new

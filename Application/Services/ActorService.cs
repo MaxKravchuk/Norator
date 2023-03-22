@@ -50,19 +50,6 @@ namespace Application.Services
             return actor;
         }
 
-        public async Task<IEnumerable<Actor>> GetActorByNameAsync(string name)
-        {
-            var actors = await _actorRepository.GetAsync(includeProperties: "Content_Actors.Content");
-            var result = actors.Where(a => a.Name.Contains(name));
-
-            if (result == null)
-            {
-                throw new NotFoundException();
-            }
-
-            return result;
-        }
-
         public async Task<PagedList<Actor>> GetActorsAsync(ActorParameters actorParameters)
         {
             var filterQuery = GetFilterQuery(actorParameters.FilterParam);

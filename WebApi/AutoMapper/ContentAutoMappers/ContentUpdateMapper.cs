@@ -10,12 +10,13 @@ using WebApi.AutoMapper.Interfaces;
 
 namespace WebApi.AutoMapper.ContentAutoMappers
 {
-    public class ContentCreateMapper : IViewModelMapper<ContentCreateViewModel, Content>
+    public class ContentUpdateMapper : IViewModelMapper<ContentUpdateViewModel, Content>
     {
-        public Content Map(ContentCreateViewModel viewModel)
+        public Content Map(ContentUpdateViewModel viewModel)
         {
             return new Content
             {
+                Id = viewModel.Id,
                 Name = viewModel.Name,
                 ReleaseDate = viewModel.ReleaseDate,
                 ContentCategoryId = viewModel.ContentCategoryId,

@@ -2,9 +2,14 @@
 using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
+using Core.Paginator;
+using Core.Paginator.Parameters;
+using Core.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,23 +81,15 @@ namespace Application.Services
             return content;
         }
 
-        public async Task<IEnumerable<Content>> GetContentByNameAsync(string name)
+        public async Task<PagedList<Content>> GetContentsAsync(ContentParameters contentParameters)
         {
-            var content = await _contentRepository.GetAsync(
-                includeProperties: "Content_Genres.Genre, Content_Actors.Actor");
-            var result = content.Where(c => c.Name == name);
+            var filterQuery = GetFilterQuery(contentParameters.FilterParam);
 
-            if (content == null)
-            {
-                throw new NotFoundException();
-            }
-
-            return content;
-        }
-        public async Task<IEnumerable<Content>> GetContentsAsync()
-        {
-            var contents = await _contentRepository.GetAsync(
-                includeProperties: "Content_Genres.Genre, Content_Actors.Actor");
+            var contents = await _contentRepository.GetAllAsync(
+                parameters: contentParameters,
+                filter: filterQuery,
+                includeProperties: q => q
+                .Include(c => c.ContentCategory));
 
             return contents;
         }
@@ -146,6 +143,20 @@ namespace Application.Services
 
             await _content_ActorRepository.SaveChangesAsync();
             await _content_GenreRepository.SaveChangesAsync();
+        }
+
+        private static Expression<Func<Content, bool>>? GetFilterQuery(string? filterParam)
+        {
+            Expression<Func<Content, bool>>? filterQuery = null;
+
+            if (filterParam is not null)
+            {
+                string formatedFilter = filterParam.Trim().ToLower();
+
+                filterQuery = u => u.Name!.ToLower().Contains(formatedFilter);
+            }
+
+            return filterQuery;
         }
     }
 }

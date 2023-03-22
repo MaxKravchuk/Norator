@@ -12,7 +12,6 @@ namespace Core.Interfaces.Services
     public interface IActorService
     {
         Task<Actor> GetActorByIdAsync(int id);
-        Task<IEnumerable<Actor>> GetActorByNameAsync(string name);
         Task<PagedList<Actor>> GetActorsAsync(ActorParameters actorParameters);
         Task CreateActorAsync(Actor actor);
         Task UpdateActorAsync(Actor actor);

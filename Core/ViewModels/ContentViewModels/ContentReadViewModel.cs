@@ -11,8 +11,9 @@ namespace Core.ViewModels.ContentViewModels
     public class ContentReadViewModel : ContentViewModel
     {
         public int Id { get; set; }
-        public IEnumerable<ActorViewModel> contentViewModels { get; set; } = new List<ActorViewModel>();
-        public IEnumerable<GenreViewModel> genreViewModels { get; set; } = new List<GenreViewModel>();
+        public string ContentCategory { get; set; }
+        public IEnumerable<ContentPropsViewModel> actorsViewModels { get; set; } = new List<ContentPropsViewModel>();
+        public IEnumerable<ContentPropsViewModel> genreViewModels { get; set; } = new List<ContentPropsViewModel>();
 
     }
 }
