@@ -47,5 +47,12 @@ namespace WebApi.Controllers
             var viewModels = _pagedListMapper.Map(contents);
             return viewModels;
         }
+
+        [HttpPost]
+        public async Task CreateContent([FromBody] ContentCreateViewModel viewModel)
+        {
+            var content = _createMapper.Map(viewModel);
+            await _contenService.CreateContentAsync(content, viewModel.Actors, viewModel.Genres);
+        }
     }
 }

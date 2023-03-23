@@ -10,5 +10,6 @@ namespace Core.ViewModels.ContentViewModels
     {
         public int ContentCategoryId { get; set; }
         public IEnumerable<int> Genres { get; set; } = new List<int>();
+        public IEnumerable<int> Actors { get; set; } = new List<int>();
     }
 }

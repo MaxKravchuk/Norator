@@ -48,7 +48,6 @@ namespace Application.Services
                     Actor = await _actorService.GetActorByIdAsync(actorId)
                 });
             }
-
             foreach (var genreId in genresId)
             {
                 content.Content_Genres.Add(new Content_Genre()
@@ -57,6 +56,7 @@ namespace Application.Services
                     Genre = await _genreService.GetGenreByIdAsync(genreId)
                 });
             }
+
             await _contentRepository.InsertAsync(content);
             await _contentRepository.SaveChangesAsync();
         }
@@ -73,7 +73,7 @@ namespace Application.Services
             var content = await _contentRepository.GetByIdAsync(id,
                 includeProperties: "Content_Genres.Genre, Content_Actors.Actor");
 
-            if(content == null)
+            if (content == null)
             {
                 throw new NotFoundException();
             }
@@ -119,7 +119,7 @@ namespace Application.Services
             {
                 _content_ActorRepository.Delete(actor);
             }
-            foreach(var genres in exGenres)
+            foreach (var genres in exGenres)
             {
                 _content_GenreRepository.Delete(genres);
             }

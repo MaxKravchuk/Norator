@@ -41,7 +41,8 @@ namespace Application.Services
 
         public async Task<Genre> GetGenreByIdAsync(int id)
         {
-            var genre = await _genreRepository.GetByIdAsync(id);
+            var genre = await _genreRepository.GetByIdAsync(id,
+                includeProperties: "Content_Genres.Content");
 
             if(genre == null)
             {
