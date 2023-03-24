@@ -11,13 +11,14 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Repositories
 {
-    public interface IContentRepository : IRepository<Content>
+    public interface IContentRepository : IPagedRepository<Content, ContentParameters>
     {
+        /*
         Task<PagedList<Content>> GetAllAsync(
             ContentParameters parameters,
             Expression<Func<Content, bool>>? filter = null,
             Func<IQueryable<Content>, IOrderedQueryable<Content>>? orderBy = null,
             Func<IQueryable<Content>, IIncludableQueryable<Content, object>>? includeProperties = null);
-
+        */
     }
 }

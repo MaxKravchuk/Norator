@@ -3,6 +3,7 @@ using Core.Paginator;
 using Core.ViewModels;
 using Core.ViewModels.ActorViewModels;
 using Core.ViewModels.ContentViewModels;
+using Core.ViewModels.GenreViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using WebApi.AutoMapper.ActorAutoMappers;
 using WebApi.AutoMapper.ActorAutoMappers.Helpers;
 using WebApi.AutoMapper.ContentAutoMappers;
 using WebApi.AutoMapper.ContentAutoMappers.Helpers;
+using WebApi.AutoMapper.GenreAutoMappers;
 using WebApi.AutoMapper.Interfaces;
 
 namespace WebApi.AutoMapper
@@ -35,6 +37,11 @@ namespace WebApi.AutoMapper
             services.AddScoped<IViewModelMapper<PagedList<Content>, PagedReadViewModel<ContentListReadViewModel>>, ContentPagedMapper>();
             services.AddScoped<IEnumerableViewModelMapper<IEnumerable<Content_Actor>, IEnumerable<ContentPropsViewModel>>, ContentActorMapper>();
             services.AddScoped<IEnumerableViewModelMapper<IEnumerable<Content_Genre>, IEnumerable<ContentPropsViewModel>>, ContentGenreMapper>();
+
+            services.AddScoped<IViewModelMapper<GenreCreateViewModel, Genre>, GenreCreateMapper>();
+            services.AddScoped<IEnumerableViewModelMapper<IEnumerable<Genre>, IEnumerable<GenreUpdateViewModel>>, GenreListReadMapper>();
+            services.AddScoped<IViewModelMapper<PagedList<Genre>, PagedReadViewModel<GenreUpdateViewModel>>, GenrePagedMapper>();
+            services.AddScoped<IViewModelMapper<GenreUpdateViewModel, Genre>, GenreReadMapper>();
         }
     }
 }

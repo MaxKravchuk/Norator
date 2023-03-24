@@ -15,13 +15,13 @@ using Core.Extensions;
 
 namespace DataAccess.Repositories
 {
-    public class ActorRepository : Repository<Actor>, IActorRepository
+    public class ActorRepository : PagedRepository<Actor, ActorParameters>, IActorRepository
     {
         public ActorRepository(NoratorContext noratorContext) : base(noratorContext)
         {
             
         }
-
+        /*
         public async Task<PagedList<Actor>> GetAllAsync(
             ActorParameters parameters,
             Expression<Func<Actor, bool>>? filter = null,
@@ -61,5 +61,6 @@ namespace DataAccess.Repositories
 
             return specializationsQuery;
         }
+        */
     }
 }

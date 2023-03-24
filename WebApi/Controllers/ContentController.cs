@@ -48,11 +48,32 @@ namespace WebApi.Controllers
             return viewModels;
         }
 
+        [HttpGet("{id:int:min(1)}")]
+        public async Task<ContentReadViewModel> GetAsync([FromRoute] int id)
+        {
+            var content = await _contenService.GetContentByIdAsync(id);
+            var viewModel = _readMapper.Map(content);
+            return viewModel;
+        }
+
         [HttpPost]
         public async Task CreateContent([FromBody] ContentCreateViewModel viewModel)
         {
             var content = _createMapper.Map(viewModel);
             await _contenService.CreateContentAsync(content, viewModel.Actors, viewModel.Genres);
+        }
+
+        [HttpDelete("{id:int:min(1)}")]
+        public async Task DeleteAsync([FromRoute] int id)
+        {
+            await _contenService.DeleteContentAsync(id);
+        }
+
+        [HttpPut]
+        public async Task UpdateAsync([FromBody] ContentUpdateViewModel newContent)
+        {
+            var updatedContent = _updateMapper.Map(newContent);
+            await _contenService.UpdateContentAsync(updatedContent, newContent.actorsId, newContent.genresId);
         }
     }
 }

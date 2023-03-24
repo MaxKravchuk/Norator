@@ -71,7 +71,7 @@ namespace Application.Services
         public async Task<Content> GetContentByIdAsync(int id)
         {
             var content = await _contentRepository.GetByIdAsync(id,
-                includeProperties: "Content_Genres.Genre, Content_Actors.Actor");
+                includeProperties: "Content_Actors.Actor,Content_Genres.Genre,ContentCategory");
 
             if (content == null)
             {
