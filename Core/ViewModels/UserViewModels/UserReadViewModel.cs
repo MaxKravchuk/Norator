@@ -11,6 +11,6 @@ namespace Core.ViewModels.UserViewModels
     {
         public int Id { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public IEnumerable<ContentListReadViewModel> contentId { get; set; } = new List<ContentListReadViewModel>();
+        public IEnumerable<ContentListReadViewModel> contentViewModels { get; set; } = new List<ContentListReadViewModel>();
     }
 }
