@@ -1,3 +1,10 @@
+using Application.Configuration;
+using DataAccess.Context;
+using DataAccess.Repositories.Configuration;
+using WebApi.AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Norator.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,8 +14,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<NoratorContext>(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AddApplicationRepositories();
+builder.Services.AddApplicationServices();
+builder.Services.AddApplicationMappers();
+
 var app = builder.Build();
 
+app.AddApplicationMiddleware();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
