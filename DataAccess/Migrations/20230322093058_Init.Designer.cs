@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(NoratorContext))]
-    [Migration("20230319133747_ExceptionTable")]
-    partial class ExceptionTable
+    [Migration("20230322093058_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,7 +67,7 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ContentType")
+                    b.Property<int>("ContentCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -83,13 +83,15 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ContentCategoryId");
+
                     b.ToTable("Contents");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            ContentType = 0,
+                            ContentCategoryId = 1,
                             Name = "Don`t Look Up",
                             NumberOfSubscribers = 1,
                             ReleaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(2021)
@@ -97,7 +99,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            ContentType = 0,
+                            ContentCategoryId = 1,
                             Name = "Charlie and the Chocolate Factory",
                             NumberOfSubscribers = 0,
                             ReleaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(2005)
@@ -175,6 +177,50 @@ namespace DataAccess.Migrations
                         {
                             GenreId = 5,
                             ContentId = 2
+                        });
+                });
+
+            modelBuilder.Entity("Core.Entities.ContentCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContentCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Film"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Series"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Cartoon"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Game"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Book"
                         });
                 });
 
@@ -317,6 +363,17 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Entities.Content", b =>
+                {
+                    b.HasOne("Core.Entities.ContentCategory", "ContentCategory")
+                        .WithMany("Contents")
+                        .HasForeignKey("ContentCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContentCategory");
+                });
+
             modelBuilder.Entity("Core.Entities.Content_Actor", b =>
                 {
                     b.HasOne("Core.Entities.Actor", "Actor")
@@ -386,6 +443,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Content_Genres");
 
                     b.Navigation("User_Contents");
+                });
+
+            modelBuilder.Entity("Core.Entities.ContentCategory", b =>
+                {
+                    b.Navigation("Contents");
                 });
 
             modelBuilder.Entity("Core.Entities.Genre", b =>

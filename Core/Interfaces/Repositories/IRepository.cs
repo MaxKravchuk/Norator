@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿using Core.Paginator;
+using Core.Paginator.Parameters;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,8 +28,6 @@ namespace Core.Interfaces.Repositories
             bool asNoTracking = false);
 
         Task<T?> GetByIdAsync(int id, string includeProperties = "");
-
-        Task<T?> GetByNameAsync(string name, string includeProperties = "");
 
         Task<T?> GetFirstOrDefaultAsync(
             Expression<Func<T, bool>>? filter = null,

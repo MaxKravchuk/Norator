@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Core.Enums
 {
-    public enum ContentType
-    {
-        Film,
-        Series,
-        Cartoon,
-        Game
-    }
+    //public enum ContentType
+    //{
+    //    Film,
+    //    Series,
+    //    Cartoon,
+    //    Game
+    //}
 }

@@ -2,6 +2,8 @@
 using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
+using Core.Paginator;
+using Core.Paginator.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,29 +35,18 @@ namespace Application.Services
             await _genreRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Genre>> GetGenreAsync()
+        public async Task<PagedList<Genre>> GetGenreAsync(GenreParameters genreParameters)
         {
-            var genres = await _genreRepository.GetAsync();
+            var genres = await _genreRepository.GetAllAsync(genreParameters);
             return genres;
         }
 
         public async Task<Genre> GetGenreByIdAsync(int id)
         {
-            var genre = await _genreRepository.GetByIdAsync(id);
+            var genre = await _genreRepository.GetByIdAsync(id,
+                includeProperties: "Content_Genres.Content");
 
             if(genre == null)
-            {
-                throw new Exception();
-            }
-
-            return genre;
-        }
-
-        public async Task<Genre> GetGenreByNameAsync(string name)
-        {
-            var genre = await _genreRepository.GetByNameAsync(name);
-
-            if (genre == null)
             {
                 throw new Exception();
             }

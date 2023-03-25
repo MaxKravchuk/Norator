@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Paginator.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;

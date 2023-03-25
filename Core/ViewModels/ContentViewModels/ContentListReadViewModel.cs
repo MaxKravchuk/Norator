@@ -9,6 +9,6 @@ namespace Core.ViewModels.ContentViewModels
     public class ContentListReadViewModel : ContentViewModel
     {
         public int Id { get; set; }
-
+        public string? ContentCategory { get; set; }
     }
 }

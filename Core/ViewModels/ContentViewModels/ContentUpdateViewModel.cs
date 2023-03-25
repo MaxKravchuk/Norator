@@ -11,8 +11,9 @@ namespace Core.ViewModels.ContentViewModels
     public class ContentUpdateViewModel : ContentViewModel
     {
         public int Id { get; set; }
+        public int ContentCategoryId { get; set; }
         public IEnumerable<int> actorsId { get; set; } = new List<int>();
-        public IEnumerable<int> genreId { get; set; } = new List<int>();
+        public IEnumerable<int> genresId { get; set; } = new List<int>();
 
     }
 }

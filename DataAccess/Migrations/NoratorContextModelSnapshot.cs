@@ -40,7 +40,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Actors");
+                    b.ToTable("Actors", (string)null);
 
                     b.HasData(
                         new
@@ -65,7 +65,7 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ContentType")
+                    b.Property<int>("ContentCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -81,13 +81,15 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contents");
+                    b.HasIndex("ContentCategoryId");
+
+                    b.ToTable("Contents", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            ContentType = 0,
+                            ContentCategoryId = 1,
                             Name = "Don`t Look Up",
                             NumberOfSubscribers = 1,
                             ReleaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(2021)
@@ -95,7 +97,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            ContentType = 0,
+                            ContentCategoryId = 1,
                             Name = "Charlie and the Chocolate Factory",
                             NumberOfSubscribers = 0,
                             ReleaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(2005)
@@ -114,7 +116,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ContentId");
 
-                    b.ToTable("ContentActors");
+                    b.ToTable("ContentActors", (string)null);
 
                     b.HasData(
                         new
@@ -141,7 +143,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ContentId");
 
-                    b.ToTable("ContentGenres");
+                    b.ToTable("ContentGenres", (string)null);
 
                     b.HasData(
                         new
@@ -176,6 +178,50 @@ namespace DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Entities.ContentCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContentCategories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Film"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Series"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Cartoon"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Game"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Book"
+                        });
+                });
+
             modelBuilder.Entity("Core.Entities.ExceptionEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -198,7 +244,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exceptions");
+                    b.ToTable("Exceptions", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Genre", b =>
@@ -216,7 +262,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
 
                     b.HasData(
                         new
@@ -272,7 +318,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
@@ -305,7 +351,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ContentId");
 
-                    b.ToTable("UserContents");
+                    b.ToTable("UserContents", (string)null);
 
                     b.HasData(
                         new
@@ -313,6 +359,17 @@ namespace DataAccess.Migrations
                             UserId = 2,
                             ContentId = 1
                         });
+                });
+
+            modelBuilder.Entity("Core.Entities.Content", b =>
+                {
+                    b.HasOne("Core.Entities.ContentCategory", "ContentCategory")
+                        .WithMany("Contents")
+                        .HasForeignKey("ContentCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContentCategory");
                 });
 
             modelBuilder.Entity("Core.Entities.Content_Actor", b =>
@@ -384,6 +441,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Content_Genres");
 
                     b.Navigation("User_Contents");
+                });
+
+            modelBuilder.Entity("Core.Entities.ContentCategory", b =>
+                {
+                    b.Navigation("Contents");
                 });
 
             modelBuilder.Entity("Core.Entities.Genre", b =>

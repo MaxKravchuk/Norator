@@ -2,9 +2,14 @@
 using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
+using Core.Paginator;
+using Core.Paginator.Parameters;
+using Core.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,7 +48,6 @@ namespace Application.Services
                     Actor = await _actorService.GetActorByIdAsync(actorId)
                 });
             }
-
             foreach (var genreId in genresId)
             {
                 content.Content_Genres.Add(new Content_Genre()
@@ -52,6 +56,7 @@ namespace Application.Services
                     Genre = await _genreService.GetGenreByIdAsync(genreId)
                 });
             }
+
             await _contentRepository.InsertAsync(content);
             await _contentRepository.SaveChangesAsync();
         }
@@ -66,20 +71,7 @@ namespace Application.Services
         public async Task<Content> GetContentByIdAsync(int id)
         {
             var content = await _contentRepository.GetByIdAsync(id,
-                includeProperties: "Content_Genres.Genre, Content_Actors.Actor");
-
-            if(content == null)
-            {
-                throw new NotFoundException();
-            }
-
-            return content;
-        }
-
-        public async Task<Content> GetContentByNameAsync(string name)
-        {
-            var content = await _contentRepository.GetByNameAsync(name,
-                includeProperties: "Content_Genres.Genre, Content_Actors.Actor");
+                includeProperties: "Content_Actors.Actor,Content_Genres.Genre,ContentCategory");
 
             if (content == null)
             {
@@ -88,10 +80,16 @@ namespace Application.Services
 
             return content;
         }
-        public async Task<IEnumerable<Content>> GetContentsAsync()
+
+        public async Task<PagedList<Content>> GetContentsAsync(ContentParameters contentParameters)
         {
-            var contents = await _contentRepository.GetAsync(
-                includeProperties: "Content_Genres.Genre, Content_Actors.Actor");
+            var filterQuery = GetFilterQuery(contentParameters.FilterParam);
+
+            var contents = await _contentRepository.GetAllAsync(
+                parameters: contentParameters,
+                filter: filterQuery,
+                includeProperties: q => q
+                .Include(c => c.ContentCategory));
 
             return contents;
         }
@@ -121,7 +119,7 @@ namespace Application.Services
             {
                 _content_ActorRepository.Delete(actor);
             }
-            foreach(var genres in exGenres)
+            foreach (var genres in exGenres)
             {
                 _content_GenreRepository.Delete(genres);
             }
@@ -145,6 +143,20 @@ namespace Application.Services
 
             await _content_ActorRepository.SaveChangesAsync();
             await _content_GenreRepository.SaveChangesAsync();
+        }
+
+        private static Expression<Func<Content, bool>>? GetFilterQuery(string? filterParam)
+        {
+            Expression<Func<Content, bool>>? filterQuery = null;
+
+            if (filterParam is not null)
+            {
+                string formatedFilter = filterParam.Trim().ToLower();
+
+                filterQuery = u => u.Name!.ToLower().Contains(formatedFilter);
+            }
+
+            return filterQuery;
         }
     }
 }

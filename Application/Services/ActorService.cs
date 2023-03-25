@@ -2,9 +2,13 @@
 using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
+using Core.Paginator;
+using Core.Paginator.Parameters;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,7 +40,7 @@ namespace Application.Services
 
         public async Task<Actor> GetActorByIdAsync(int id)
         {
-            var actor = await _actorRepository.GetByIdAsync(id);
+            var actor = await _actorRepository.GetByIdAsync(id, includeProperties: "Content_Actors.Content");
 
             if(actor == null)
             {
@@ -46,22 +50,15 @@ namespace Application.Services
             return actor;
         }
 
-        public async Task<Actor> GetActorByNameAsync(string name)
+        public async Task<PagedList<Actor>> GetActorsAsync(ActorParameters actorParameters)
         {
-            var actor = await _actorRepository.GetByNameAsync(name);
+            var filterQuery = GetFilterQuery(actorParameters.FilterParam);
 
-            if (actor == null)
-            {
-                throw new NotFoundException();
-            }
-
-            return actor;
-        }
-
-        public async Task<IEnumerable<Actor>> GetActorsAsync()
-        {
-            var actors = await _actorRepository.GetAsync(
-                includeProperties: "Content_Actors.Content");
+            var actors = await _actorRepository.GetAllAsync(
+                parameters: actorParameters,
+                filter: filterQuery,
+                includeProperties: q => q
+                .Include(a => a.Content_Actors));
 
             return actors;
         }
@@ -70,6 +67,19 @@ namespace Application.Services
         {
             _actorRepository.Update(actor);
             await _actorRepository.SaveChangesAsync();
+        }
+        private static Expression<Func<Actor, bool>>? GetFilterQuery(string? filterParam)
+        {
+            Expression<Func<Actor, bool>>? filterQuery = null;
+
+            if (filterParam is not null)
+            {
+                string formatedFilter = filterParam.Trim().ToLower();
+
+                filterQuery = u => u.Name!.ToLower().Contains(formatedFilter);
+            }
+
+            return filterQuery;
         }
     }
 }

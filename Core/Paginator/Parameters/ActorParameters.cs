@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Paginator.Parameters
 {
-    internal class ParametersForAllEntities
+    public class ActorParameters : ElementParameters
     {
+        public string? FilterParam { get; init; }
     }
 }

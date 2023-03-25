@@ -9,6 +9,7 @@ namespace Core.ViewModels.UserViewModels
 {
     public class UserUpdateViewModel : UserViewModel
     {
+        public int Id { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Password { get; set; }
     }

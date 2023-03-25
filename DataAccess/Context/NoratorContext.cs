@@ -11,6 +11,7 @@ namespace DataAccess.Context
     public class NoratorContext : DbContext
     {
         public DbSet<Actor> Actors { get; set; }
+        public DbSet<ContentCategory> ContentCategories { get; set; }
         public DbSet<Content> Contents { get; set; }
         public DbSet<Content_Actor> ContentActors { get; set; }
         public DbSet<Content_Genre> ContentGenres{ get; set; }

@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Repositories;
+using Core.Paginator.Parameters;
 using DataAccess.Context;
 using System;
 using System.Collections.Generic;

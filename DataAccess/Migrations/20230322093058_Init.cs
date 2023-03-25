@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,19 +24,32 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Contents",
+                name: "ContentCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    ContentType = table.Column<int>(type: "int", nullable: false),
-                    ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NumberOfSubscribers = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Contents", x => x.Id);
+                    table.PrimaryKey("PK_ContentCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Exceptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StackTrace = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Exceptions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,6 +79,28 @@ namespace DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Contents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NumberOfSubscribers = table.Column<int>(type: "int", nullable: false),
+                    ContentCategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contents_ContentCategories_ContentCategoryId",
+                        column: x => x.ContentCategoryId,
+                        principalTable: "ContentCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -150,12 +185,15 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Contents",
-                columns: new[] { "Id", "ContentType", "Name", "NumberOfSubscribers", "ReleaseDate" },
+                table: "ContentCategories",
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, 0, "Don`t Look Up", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(2021) },
-                    { 2, 0, "Charlie and the Chocolate Factory", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(2005) }
+                    { 1, "Film" },
+                    { 2, "Series" },
+                    { 3, "Cartoon" },
+                    { 4, "Game" },
+                    { 5, "Book" }
                 });
 
             migrationBuilder.InsertData(
@@ -178,6 +216,16 @@ namespace DataAccess.Migrations
                     { 1, new DateTime(2002, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "123Admin#", 0 },
                     { 2, new DateTime(2012, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tarakan", "123Tarakan#", 1 }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Contents",
+                columns: new[] { "Id", "ContentCategoryId", "Name", "NumberOfSubscribers", "ReleaseDate" },
+                values: new object[] { 1, 1, "Don`t Look Up", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(2021) });
+
+            migrationBuilder.InsertData(
+                table: "Contents",
+                columns: new[] { "Id", "ContentCategoryId", "Name", "NumberOfSubscribers", "ReleaseDate" },
+                values: new object[] { 2, 1, "Charlie and the Chocolate Factory", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified).AddTicks(2005) });
 
             migrationBuilder.InsertData(
                 table: "ContentActors",
@@ -217,6 +265,11 @@ namespace DataAccess.Migrations
                 column: "ContentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Contents_ContentCategoryId",
+                table: "Contents",
+                column: "ContentCategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserContents_ContentId",
                 table: "UserContents",
                 column: "ContentId");
@@ -229,6 +282,9 @@ namespace DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "ContentGenres");
+
+            migrationBuilder.DropTable(
+                name: "Exceptions");
 
             migrationBuilder.DropTable(
                 name: "UserContents");
@@ -244,6 +300,9 @@ namespace DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "ContentCategories");
         }
     }
 }
