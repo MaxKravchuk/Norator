@@ -16,7 +16,8 @@ namespace DataAccess
             builder.Entity<Actor>().HasData(new[]
             {
                 new Actor(){Id =1, Name = "Jonah Hill", DateOfBirth=new DateTime(1983,12,20)},
-                new Actor(){Id =2, Name = "Johnny Depp", DateOfBirth = new DateTime(1963,6,9)}
+                new Actor(){Id =2, Name = "Johnny Depp", DateOfBirth = new DateTime(1963,6,9)},
+                new Actor(){Id =3, Name = "Freddie Highmore", DateOfBirth = new DateTime(1992,2,14)}
             });
 
             builder.Entity<ContentCategory>().HasData(new[]
@@ -39,7 +40,8 @@ namespace DataAccess
             builder.Entity<Content_Actor>().HasData(new[]
             {
                 new Content_Actor() {ContentId = 1, ActorId = 1},
-                new Content_Actor(){ContentId = 2, ActorId = 2}
+                new Content_Actor(){ContentId = 2, ActorId = 2},
+                new Content_Actor() {ContentId = 2, ActorId = 3}
             });
 
             builder.Entity<Genre>().HasData(new[]

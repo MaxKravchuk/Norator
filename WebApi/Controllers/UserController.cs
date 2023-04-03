@@ -87,8 +87,8 @@ namespace WebApi.Controllers
             await _userService.AddContent(userAddContentViewModel.userId, userAddContentViewModel.contentId);
         }
 
-        [HttpPost("login")]
-        public async Task<UserReadListViewModel> LogIn([FromBody] UserLogInViewModel userLogIn)
+        [HttpGet("login")]
+        public async Task<UserReadListViewModel> LogIn([FromQuery] UserLogInViewModel userLogIn)
         {
             var user = await _userService.LogInAsync(userLogIn);
             var viewModel = _logInMapper.Map(user);
