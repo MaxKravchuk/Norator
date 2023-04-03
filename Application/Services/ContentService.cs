@@ -80,7 +80,23 @@ namespace Application.Services
 
             return content;
         }
+        //public async Task<IEnumerable<Content>> GetContentByUserIdAsync(ContentParameters contentParameters)
+        //{
+        //    var filter = GetFilterQuery(contentParameters.FilterParam);
 
+        //    var content = await _contentRepository.GetAllAsync(
+        //        parameters: contentParameters,
+        //        filter: filter,
+        //        includeProperties: q => q
+        //        .Include(c => c.ContentCategory));
+
+        //    if (content == null)
+        //    {
+        //        throw new NotFoundException();
+        //    }
+
+        //    return content;
+        //}
         public async Task<PagedList<Content>> GetContentsAsync(ContentParameters contentParameters)
         {
             var filterQuery = GetFilterQuery(contentParameters.FilterParam);

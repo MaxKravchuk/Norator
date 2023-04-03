@@ -14,7 +14,7 @@ namespace Core.Interfaces.Services
     {
         Task<User> GetUserByIdAsync(int id);
         Task<PagedList<User>> GetUsersAsync(UserParameters actorParameters);
-        Task CreateUserAsync(User user);
+        Task<int> CreateUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);
         Task AddContent(int userId, int contentId);

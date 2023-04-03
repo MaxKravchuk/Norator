@@ -56,6 +56,14 @@ namespace WebApi.Controllers
             return viewModel;
         }
 
+        //[HttpGet("{id:int:min(1)}")]
+        //public async Task<ContentReadViewModel> GetByUserIdAsync([FromRoute] int id)
+        //{
+        //    var content = await _contenService.GetContentByUserIdAsync(id);
+        //    var viewModel = _readMapper.Map(content);
+        //    return viewModel;
+        //}
+
         [HttpPost]
         public async Task CreateContent([FromBody] ContentCreateViewModel viewModel)
         {

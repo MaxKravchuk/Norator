@@ -23,6 +23,10 @@ namespace DataAccess.Configuration
                 .IsRequired();
 
             builder
+                .HasIndex(x=>x.NickName)
+                .IsUnique();
+
+            builder
                 .Property(x => x.Password)
                 .HasMaxLength(16)
                 .IsRequired();

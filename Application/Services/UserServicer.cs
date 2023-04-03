@@ -57,10 +57,13 @@ namespace Application.Services
             await _user_ContentRepository.SaveChangesAsync();
         }
 
-        public async Task CreateUserAsync(User user)
+        public async Task<int> CreateUserAsync(User user)
         {
+            user.UserType = Core.Enums.UserType.Client;
             await _userRepository.InsertAsync(user);
             await _userRepository.SaveChangesAsync();
+            var id = user.Id;
+            return id;
         }
 
         public async Task DeleteUserAsync(int id)
@@ -132,7 +135,8 @@ namespace Application.Services
             {
                 string formatedFilter = filterParam.Trim().ToLower();
 
-                filterQuery = u => u.NickName!.ToLower().Contains(formatedFilter);
+                filterQuery = u => u.NickName!.ToLower().Contains(formatedFilter)
+                                    || u.User_Contents.Any(x=>x.Content.Name.ToLower()==filterParam.ToLower());
             }
 
             return filterQuery;
