@@ -135,8 +135,7 @@ namespace Application.Services
             {
                 string formatedFilter = filterParam.Trim().ToLower();
 
-                filterQuery = u => u.NickName!.ToLower().Contains(formatedFilter)
-                                    || u.User_Contents.Any(x=>x.Content.Name.ToLower()==filterParam.ToLower());
+                filterQuery = u => u.NickName!.ToLower().Contains(formatedFilter);
             }
 
             return filterQuery;

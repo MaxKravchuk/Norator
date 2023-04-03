@@ -9,5 +9,7 @@ namespace Core.Paginator.Parameters
     public class ContentParameters : ElementParameters
     {
         public string? FilterParam { get; init; }
+        public string? ActorName { get; set; }
+        public string? UserName { get; set; }
     }
 }

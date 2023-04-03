@@ -99,7 +99,7 @@ namespace Application.Services
         //}
         public async Task<PagedList<Content>> GetContentsAsync(ContentParameters contentParameters)
         {
-            var filterQuery = GetFilterQuery(contentParameters.FilterParam);
+            var filterQuery = GetFilterQuery(contentParameters.FilterParam, contentParameters.ActorName, contentParameters.UserName);
 
             var contents = await _contentRepository.GetAllAsync(
                 parameters: contentParameters,
@@ -161,15 +161,32 @@ namespace Application.Services
             await _content_GenreRepository.SaveChangesAsync();
         }
 
-        private static Expression<Func<Content, bool>>? GetFilterQuery(string? filterParam)
+        private static Expression<Func<Content, bool>>? GetFilterQuery(string? filterParam, string? ActorName, string? UserName)
         {
             Expression<Func<Content, bool>>? filterQuery = null;
+
+            if (filterParam is not null && ActorName is not null && UserName is not null)
+            {
+                throw new ForbidException();
+            }
 
             if (filterParam is not null)
             {
                 string formatedFilter = filterParam.Trim().ToLower();
 
                 filterQuery = u => u.Name!.ToLower().Contains(formatedFilter);
+            }
+            else if(ActorName is not null)
+            {
+                string ActorNameT = ActorName.Trim().ToLower();
+
+                filterQuery = u => u.Content_Actors.All(c=>c.Actor.Name.ToLower().Contains(ActorNameT));
+            }
+            else if (UserName is not null)
+            {
+                string UserNameT = UserName.Trim().ToLower();
+
+                filterQuery = u => u.User_Contents.All(c => c.User.NickName.ToLower().Contains(UserNameT));
             }
 
             return filterQuery;
