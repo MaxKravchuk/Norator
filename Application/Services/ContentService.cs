@@ -80,23 +80,7 @@ namespace Application.Services
 
             return content;
         }
-        //public async Task<IEnumerable<Content>> GetContentByUserIdAsync(ContentParameters contentParameters)
-        //{
-        //    var filter = GetFilterQuery(contentParameters.FilterParam);
 
-        //    var content = await _contentRepository.GetAllAsync(
-        //        parameters: contentParameters,
-        //        filter: filter,
-        //        includeProperties: q => q
-        //        .Include(c => c.ContentCategory));
-
-        //    if (content == null)
-        //    {
-        //        throw new NotFoundException();
-        //    }
-
-        //    return content;
-        //}
         public async Task<PagedList<Content>> GetContentsAsync(ContentParameters contentParameters)
         {
             var filterQuery = GetFilterQuery(contentParameters.FilterParam, contentParameters.ActorName, contentParameters.UserName);
@@ -180,13 +164,13 @@ namespace Application.Services
             {
                 string ActorNameT = ActorName.Trim().ToLower();
 
-                filterQuery = u => u.Content_Actors.All(c=>c.Actor.Name.ToLower().Contains(ActorNameT));
+                filterQuery = u => u.Content_Actors.Any(c => c.Actor.Name.ToLower().Contains(ActorNameT));
             }
             else if (UserName is not null)
             {
                 string UserNameT = UserName.Trim().ToLower();
 
-                filterQuery = u => u.User_Contents.All(c => c.User.NickName.ToLower().Contains(UserNameT));
+                filterQuery = u => u.User_Contents.Any(c => c.User.NickName.ToLower().Contains(UserNameT));
             }
 
             return filterQuery;

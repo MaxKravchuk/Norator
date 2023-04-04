@@ -83,5 +83,11 @@ namespace WebApi.Controllers
             var updatedContent = _updateMapper.Map(newContent);
             await _contenService.UpdateContentAsync(updatedContent, newContent.actorsId, newContent.genresId);
         }
+
+        //[HttpGet("getbyactor")]
+        //public async Task<IEnumerable<Content>> GetByActorName([FromBody] ContentParameters contentParameters)
+        //{
+        //    var r = _contenService.Get
+        //}
     }
 }
