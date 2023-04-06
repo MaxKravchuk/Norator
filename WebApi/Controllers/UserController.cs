@@ -88,6 +88,12 @@ namespace WebApi.Controllers
             await _userService.AddContent(userAddContentViewModel.userId, userAddContentViewModel.contentId);
         }
 
+        [HttpPost("deleteContent")]
+        public async Task DeleteContent([FromBody] UserAddContentViewModel userAddContentViewModel)
+        {
+            await _userService.DeleteContent(userAddContentViewModel.userId, userAddContentViewModel.contentId);
+        }
+
         [HttpGet("login")]
         public async Task<UserReadListViewModel> LogIn([FromQuery] UserLogInViewModel userLogIn)
         {
