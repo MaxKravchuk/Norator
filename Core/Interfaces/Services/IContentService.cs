@@ -17,6 +17,7 @@ namespace Core.Interfaces.Services
         Task CreateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId);
         Task UpdateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId);
         Task DeleteContentAsync(int id);
+        Task<IEnumerable<Content>> GetTop20ContentAsync();
 
     }
 }

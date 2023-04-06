@@ -5,6 +5,7 @@ using Core.Interfaces.Services;
 using Core.Paginator;
 using Core.Paginator.Parameters;
 using Core.ViewModels;
+using Core.ViewModels.ContentViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -108,6 +109,13 @@ namespace Application.Services
             await _contentRepository.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<Content>> GetTop20ContentAsync()
+        {
+            var contents = await _contentRepository.GetAsync(orderBy: con => con.OrderByDescending(x => x.NumberOfSubscribers), includeProperties:"ContentCategory");
+            var top = contents.Take(20);
+            return top;
+        } 
+
         private async Task UpdateContentPropertiesAsync(int contentId, IEnumerable<int> actorsId, IEnumerable<int> genresId)
         {
             var exActors = await _content_ActorRepository.GetAsync(
@@ -144,7 +152,6 @@ namespace Application.Services
             await _content_ActorRepository.SaveChangesAsync();
             await _content_GenreRepository.SaveChangesAsync();
         }
-
         private static Expression<Func<Content, bool>>? GetFilterQuery(string? filterParam, string? ActorName, string? UserName)
         {
             Expression<Func<Content, bool>>? filterQuery = null;
