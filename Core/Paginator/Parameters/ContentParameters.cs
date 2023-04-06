@@ -10,6 +10,5 @@ namespace Core.Paginator.Parameters
     {
         public string? FilterParam { get; init; }
         public string? ActorName { get; set; }
-        public string? UserName { get; set; }
     }
 }
