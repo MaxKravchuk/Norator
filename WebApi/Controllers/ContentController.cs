@@ -23,6 +23,7 @@ namespace WebApi.Controllers
         private readonly IViewModelMapper<ContentCreateViewModel, Content> _createMapper;
         private readonly IViewModelMapper<ContentUpdateViewModel, Content> _updateMapper;
         private readonly IViewModelMapper<Content, ContentReadViewModel> _readMapper;
+        private readonly IEnumerableViewModelMapper<IEnumerable<Content>, IEnumerable<ContentListReadViewModel>> _readListMapper;
         private readonly IViewModelMapper<PagedList<Content>, PagedReadViewModel<ContentListReadViewModel>> _pagedListMapper;
 
         public ContentController(
@@ -30,7 +31,8 @@ namespace WebApi.Controllers
             IViewModelMapper<ContentCreateViewModel, Content> createMapper,
             IViewModelMapper<ContentUpdateViewModel, Content> updateMapper,
             IViewModelMapper<Content, ContentReadViewModel> readMapper,
-            IViewModelMapper<PagedList<Content>, PagedReadViewModel<ContentListReadViewModel>> pagedListMapper
+            IViewModelMapper<PagedList<Content>, PagedReadViewModel<ContentListReadViewModel>> pagedListMapper,
+            IEnumerableViewModelMapper<IEnumerable<Content>, IEnumerable<ContentListReadViewModel>> readListMapper
             )
         {
             _contenService = contenService;
@@ -38,6 +40,7 @@ namespace WebApi.Controllers
             _updateMapper = updateMapper;
             _readMapper = readMapper;
             _pagedListMapper = pagedListMapper;
+            _readListMapper = readListMapper;
         }
 
         [HttpGet("getall")]
@@ -55,6 +58,14 @@ namespace WebApi.Controllers
             var viewModel = _readMapper.Map(content);
             return viewModel;
         }
+
+        //[HttpGet("{id:int:min(1)}")]
+        //public async Task<ContentReadViewModel> GetByUserIdAsync([FromRoute] int id)
+        //{
+        //    var content = await _contenService.GetContentByUserIdAsync(id);
+        //    var viewModel = _readMapper.Map(content);
+        //    return viewModel;
+        //}
 
         [HttpPost]
         public async Task CreateContent([FromBody] ContentCreateViewModel viewModel)
@@ -74,6 +85,14 @@ namespace WebApi.Controllers
         {
             var updatedContent = _updateMapper.Map(newContent);
             await _contenService.UpdateContentAsync(updatedContent, newContent.actorsId, newContent.genresId);
+        }
+
+        [HttpGet("gettop20")]
+        public async Task<IEnumerable<ContentListReadViewModel>> GetTop20Async()
+        {
+            var contents = await _contenService.GetTop20ContentAsync();
+            var viewModels = _readListMapper.Map(contents);
+            return viewModels;
         }
     }
 }

@@ -62,10 +62,11 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("createUser")]
-        public async Task CreateUser([FromBody] UserCreateViewModel viewModel)
+        public async Task<int> CreateUser([FromBody] UserCreateViewModel viewModel)
         {
             var user = _createMapper.Map(viewModel);
-            await _userService.CreateUserAsync(user);
+            var id = await _userService.CreateUserAsync(user);
+            return id;
         }
 
         [HttpPut]
@@ -87,8 +88,8 @@ namespace WebApi.Controllers
             await _userService.AddContent(userAddContentViewModel.userId, userAddContentViewModel.contentId);
         }
 
-        [HttpPost("login")]
-        public async Task<UserReadListViewModel> LogIn([FromBody] UserLogInViewModel userLogIn)
+        [HttpGet("login")]
+        public async Task<UserReadListViewModel> LogIn([FromQuery] UserLogInViewModel userLogIn)
         {
             var user = await _userService.LogInAsync(userLogIn);
             var viewModel = _logInMapper.Map(user);

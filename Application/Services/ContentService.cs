@@ -5,6 +5,7 @@ using Core.Interfaces.Services;
 using Core.Paginator;
 using Core.Paginator.Parameters;
 using Core.ViewModels;
+using Core.ViewModels.ContentViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -83,7 +84,7 @@ namespace Application.Services
 
         public async Task<PagedList<Content>> GetContentsAsync(ContentParameters contentParameters)
         {
-            var filterQuery = GetFilterQuery(contentParameters.FilterParam);
+            var filterQuery = GetFilterQuery(contentParameters.FilterParam, contentParameters.ActorName, contentParameters.UserName);
 
             var contents = await _contentRepository.GetAllAsync(
                 parameters: contentParameters,
@@ -98,7 +99,7 @@ namespace Application.Services
         {
             try
             {
-                await UpdateContentPropertiesAsync(content, actorsId, genresId);
+                await UpdateContentPropertiesAsync(content.Id, actorsId, genresId);
             }
             catch (Exception ex)
             {
@@ -108,12 +109,19 @@ namespace Application.Services
             await _contentRepository.SaveChangesAsync();
         }
 
-        private async Task UpdateContentPropertiesAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId)
+        public async Task<IEnumerable<Content>> GetTop20ContentAsync()
+        {
+            var contents = await _contentRepository.GetAsync(orderBy: con => con.OrderByDescending(x => x.NumberOfSubscribers), includeProperties:"ContentCategory");
+            var top = contents.Take(20);
+            return top;
+        } 
+
+        private async Task UpdateContentPropertiesAsync(int contentId, IEnumerable<int> actorsId, IEnumerable<int> genresId)
         {
             var exActors = await _content_ActorRepository.GetAsync(
-                filter: con => con.ContentId == content.Id);
+                filter: con => con.ContentId == contentId);
             var exGenres = await _content_GenreRepository.GetAsync(
-                filter: con => con.ContentId == content.Id);
+                filter: con => con.ContentId == contentId);
 
             foreach (var actor in exActors)
             {
@@ -126,34 +134,50 @@ namespace Application.Services
 
             foreach (var actorId in actorsId)
             {
-                content.Content_Actors.Add(new Content_Actor()
+                await _content_ActorRepository.InsertAsync(new Content_Actor()
                 {
-                    Content = content,
-                    Actor = await _actorService.GetActorByIdAsync(actorId)
+                    ContentId = contentId,
+                    ActorId = actorId
                 });
             }
             foreach (var genreId in genresId)
             {
-                content.Content_Genres.Add(new Content_Genre()
+                await _content_GenreRepository.InsertAsync(new Content_Genre()
                 {
-                    Content = content,
-                    Genre = await _genreService.GetGenreByIdAsync(genreId)
+                    ContentId = contentId,
+                    GenreId = genreId
                 });
             }
 
             await _content_ActorRepository.SaveChangesAsync();
             await _content_GenreRepository.SaveChangesAsync();
         }
-
-        private static Expression<Func<Content, bool>>? GetFilterQuery(string? filterParam)
+        private static Expression<Func<Content, bool>>? GetFilterQuery(string? filterParam, string? ActorName, string? UserName)
         {
             Expression<Func<Content, bool>>? filterQuery = null;
+
+            if (filterParam is not null && ActorName is not null && UserName is not null)
+            {
+                throw new ForbidException();
+            }
 
             if (filterParam is not null)
             {
                 string formatedFilter = filterParam.Trim().ToLower();
 
                 filterQuery = u => u.Name!.ToLower().Contains(formatedFilter);
+            }
+            else if(ActorName is not null)
+            {
+                string ActorNameT = ActorName.Trim().ToLower();
+
+                filterQuery = u => u.Content_Actors.Any(c => c.Actor.Name.ToLower().Contains(ActorNameT));
+            }
+            else if (UserName is not null)
+            {
+                string UserNameT = UserName.Trim().ToLower();
+
+                filterQuery = u => u.User_Contents.Any(c => c.User.NickName.ToLower().Contains(UserNameT));
             }
 
             return filterQuery;

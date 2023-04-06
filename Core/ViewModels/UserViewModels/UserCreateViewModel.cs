@@ -11,6 +11,5 @@ namespace Core.ViewModels.UserViewModels
     {
         public DateTime DateOfBirth { get; set; }
         public string Password { get; set; }
-        public UserType UserType { get; set; }
     }
 }

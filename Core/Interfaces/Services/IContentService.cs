@@ -12,10 +12,12 @@ namespace Core.Interfaces.Services
     public interface IContenService
     {
         Task<Content> GetContentByIdAsync(int id);
+        //Task<IEnumerable<Content>> GetContentByUserIdAsync(int id);
         Task<PagedList<Content>> GetContentsAsync(ContentParameters contentParameters);
         Task CreateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId);
         Task UpdateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId);
         Task DeleteContentAsync(int id);
+        Task<IEnumerable<Content>> GetTop20ContentAsync();
 
     }
 }

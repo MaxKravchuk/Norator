@@ -21,6 +21,18 @@ builder.Services.AddApplicationRepositories();
 builder.Services.AddApplicationServices();
 builder.Services.AddApplicationMappers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "Norator",
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                      });
+});
+
+
+
+
 var app = builder.Build();
 
 app.AddApplicationMiddleware();
@@ -32,6 +44,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("Norator");
 
 app.UseAuthorization();
 
