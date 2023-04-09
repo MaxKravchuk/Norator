@@ -32,9 +32,9 @@ namespace DataAccess
             builder.Entity<Content>().HasData(new[]
             {
                 new Content(){Id = 1,Name = "Don`t Look Up", ContentCategoryId = 1, NumberOfSubscribers = 1,
-                    ReleaseDate = new DateTime(2021)},
+                    ReleaseDate = new DateTime(2021,1,1)},
                 new Content(){Id = 2,Name = "Charlie and the Chocolate Factory", ContentCategoryId = 1, NumberOfSubscribers = 0,
-                    ReleaseDate = new DateTime(2005)}
+                    ReleaseDate = new DateTime(2005,1,1)}
             });
 
             builder.Entity<Content_Actor>().HasData(new[]

@@ -4,6 +4,11 @@ using DataAccess.Repositories.Configuration;
 using WebApi.AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Norator.Middleware;
+using Norator.Configuration;
+using Microsoft.Extensions.Logging;
+using log4net.Config;
+using log4net;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,17 +25,10 @@ builder.Services.AddDbContext<NoratorContext>(opt =>
 builder.Services.AddApplicationRepositories();
 builder.Services.AddApplicationServices();
 builder.Services.AddApplicationMappers();
+builder.Services.AddSystemServices();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: "Norator",
-                      policy =>
-                      {
-                          policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-                      });
-});
-
-
+var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
 
 var app = builder.Build();

@@ -17,16 +17,26 @@ namespace Application.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly ILoggerManager _loggerManager;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, ILoggerManager loggerManager)
         {
             _categoryRepository = categoryRepository;
+            _loggerManager = loggerManager;
         }
 
         public async Task CreateCategoryAsync(ContentCategory actor)
         {
             await _categoryRepository.InsertAsync(actor);
-            await _categoryRepository.SaveChangesAsync();
+            try
+            {
+                await _categoryRepository.SaveChangesAsync();
+                _loggerManager.LogInfo("Created category successful");
+            }
+            catch (Exception ex)
+            {
+                _loggerManager.LogError($"Created category error - {ex.Message}");
+            }
         }
 
         public async Task DeleteCategoryAsync(int id)
@@ -34,7 +44,15 @@ namespace Application.Services
             var catToDelete = await GetCategoryByIdAsync(id);
 
             _categoryRepository.Delete(catToDelete);
-            await _categoryRepository.SaveChangesAsync();
+            try
+            {
+                await _categoryRepository.SaveChangesAsync();
+                _loggerManager.LogInfo($"Deleted category {id} successful");
+            }
+            catch(Exception ex)
+            {
+                _loggerManager.LogError($"Deleted category {id} error {ex.Message}");
+            }
         }
 
         public async Task<PagedList<ContentCategory>> GetCategoryAsync(CategoryParameters categoryParameters)
@@ -47,6 +65,8 @@ namespace Application.Services
                 includeProperties: q => q
                 .Include(cc => cc.Contents));
 
+            _loggerManager.LogInfo($"Get list of category {categories.Count}");
+
             return categories;
         }
 
@@ -56,16 +76,26 @@ namespace Application.Services
 
             if(category == null)
             {
+                _loggerManager.LogError($"Could not find category {id}");
                 throw new NotFoundException();
             }
 
+            _loggerManager.LogInfo($"Find caterory {id}");
             return category;
         }
 
-        public async Task UpdateCategoryAsync(ContentCategory actor)
+        public async Task UpdateCategoryAsync(ContentCategory contentCategory)
         {
-            _categoryRepository.Update(actor);
-            await _categoryRepository.SaveChangesAsync();
+            _categoryRepository.Update(contentCategory);
+            try
+            {
+                await _categoryRepository.SaveChangesAsync();
+                _loggerManager.LogInfo($"Updated {contentCategory.Id}");
+            }
+            catch (Exception ex)
+            {
+                _loggerManager.LogError($"Updated error for actor id {contentCategory.Id} erroe - {ex.Message}");
+            }
         }
 
         private static Expression<Func<ContentCategory, bool>>? GetFilterQuery(string? filterParam)

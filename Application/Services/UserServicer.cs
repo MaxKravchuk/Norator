@@ -22,47 +22,74 @@ namespace Application.Services
         private readonly IUserRepository _userRepository;
         private readonly IContenService _contenService;
         private readonly IUser_ContentRepository _user_ContentRepository;
+        private readonly ILoggerManager _loggerManager;
 
         public UserService(
             IUserRepository userRepository,
             IContenService contenService,
-            IUser_ContentRepository user_ContentRepository)
+            IUser_ContentRepository user_ContentRepository,
+            ILoggerManager loggerManager)
         {
             _userRepository = userRepository;
             _contenService = contenService;
             _user_ContentRepository = user_ContentRepository;
-
+            _loggerManager = loggerManager;
         }
 
         public async Task AddContent(int userId, int contentId)
         {
-            var user = await GetUserByIdAsync(userId);
-
-            user.User_Contents.Add(new User_Content()
+            try
             {
-                Content = await _contenService.GetContentByIdAsync(contentId),
-                User = user
-            });
+                var user = await GetUserByIdAsync(userId);
 
-            await _userRepository.SaveChangesAsync();
+                user.User_Contents.Add(new User_Content()
+                {
+                    Content = await _contenService.GetContentByIdAsync(contentId),
+                    User = user
+                });
+
+                await _userRepository.SaveChangesAsync();
+                _loggerManager.LogInfo($"Content {contentId} successful added to user {userId}");
+            }
+            catch
+            {
+                _loggerManager.LogError($"Content {contentId} doesn`t not added to user {userId}");
+            }
         }
 
         public async Task DeleteContent(int userId, int contentId)
         {
-           var content = await _user_ContentRepository.GetUserContentByUserAndContentId(userId, contentId);
-            if(content == null)
+            try
             {
-                throw new NotFoundException();
+                var content = await _user_ContentRepository.GetUserContentByUserAndContentId(userId, contentId);
+                if (content == null)
+                {
+                    throw new NotFoundException();
+                }
+                _user_ContentRepository.Delete(content);
+                await _user_ContentRepository.SaveChangesAsync();
+                _loggerManager.LogInfo($"Content {contentId} successful deleted to user {userId}");
             }
-            _user_ContentRepository.Delete(content);
-            await _user_ContentRepository.SaveChangesAsync();
+            catch
+            {
+                _loggerManager.LogError($"Content {contentId} doesn`t not deleted to user {userId}");
+            }
+
         }
 
         public async Task<int> CreateUserAsync(User user)
         {
             user.UserType = Core.Enums.UserType.Client;
             await _userRepository.InsertAsync(user);
-            await _userRepository.SaveChangesAsync();
+            try
+            {
+                await _userRepository.SaveChangesAsync();
+                _loggerManager.LogInfo($"Created user successfuly: {user.NickName}");
+            }
+            catch
+            {
+                _loggerManager.LogError($"Created user with error: {user.NickName}");
+            }
             var id = user.Id;
             return id;
         }
@@ -71,7 +98,15 @@ namespace Application.Services
         {
             var userToDelete = await GetUserByIdAsync(id);
             _userRepository.Delete(userToDelete);
-            await _userRepository.SaveChangesAsync();
+            try
+            {
+                await _userRepository.SaveChangesAsync();
+                _loggerManager.LogInfo($"User {id} deleted");
+            }
+            catch
+            {
+                _loggerManager.LogError($"Error in delete action");
+            }
         }
 
         public async Task<PagedList<User>> GetUsersAsync(UserParameters userParameters)
@@ -81,7 +116,9 @@ namespace Application.Services
             var users = await _userRepository.GetAllAsync(
                 userParameters,
                 filterQuery);
-
+            
+            _loggerManager.LogInfo($"Fetched {users.Count} users");
+            
             return users;
         }
 
@@ -92,16 +129,25 @@ namespace Application.Services
 
             if (user == null)
             {
+                _loggerManager.LogError($"User with id {id} is null");
                 throw new NotFoundException();
             }
-
+            _loggerManager.LogInfo($"Getted user with {user.Id}");
             return user;
         }
 
         public async Task UpdateUserAsync(User user)
         {
             _userRepository.Update(user);
-            await _userRepository.SaveChangesAsync();
+            try
+            {
+                await _userRepository.SaveChangesAsync();
+                _loggerManager.LogInfo($"Updated user: {user.Id}");
+            }
+            catch
+            {
+                _loggerManager.LogError($"Updating user: {user.Id} error");
+            }
         }
 
         public async Task<User> LogInAsync(UserLogInViewModel model)
@@ -120,10 +166,12 @@ namespace Application.Services
 
             if (users.Any() && users != null)
             {
+                _loggerManager.LogInfo($"User {model.NickName} is logged in");
                 return users.SingleOrDefault();
             }
             else
             {
+                _loggerManager.LogError($"Error while loggining for user {model.NickName}");
                 throw new ForbidException();
             }
         }
