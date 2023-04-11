@@ -19,6 +19,7 @@ namespace DataAccess.Repositories.Configuration
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUser_ContentRepository,  User_ContentRepository>();
+            services.AddScoped<IContentCategoryRepository, ContentCategoryRepository>();
         }
     }
 }

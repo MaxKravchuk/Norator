@@ -2,6 +2,7 @@
 using Core.Paginator;
 using Core.ViewModels;
 using Core.ViewModels.ActorViewModels;
+using Core.ViewModels.ContentCategoryViewModels;
 using Core.ViewModels.ContentViewModels;
 using Core.ViewModels.GenreViewModels;
 using Core.ViewModels.UserViewModels;
@@ -15,6 +16,7 @@ using WebApi.AutoMapper.ActorAutoMappers;
 using WebApi.AutoMapper.ActorAutoMappers.Helpers;
 using WebApi.AutoMapper.ContentAutoMappers;
 using WebApi.AutoMapper.ContentAutoMappers.Helpers;
+using WebApi.AutoMapper.ContentCategoryMappers;
 using WebApi.AutoMapper.GenreAutoMappers;
 using WebApi.AutoMapper.Interfaces;
 using WebApi.AutoMapper.UserAutoMappers;
@@ -53,6 +55,10 @@ namespace WebApi.AutoMapper
             services.AddScoped<IViewModelMapper<User, UserReadViewModel>, UserReadMapper>();
             services.AddScoped<IViewModelMapper<UserUpdateViewModel, User>, UserUpdateMapper>();
             services.AddScoped<IViewModelMapper<User, UserReadListViewModel>, UserLogInapper>();
+
+            services.AddScoped<IViewModelMapper<ContentCategoryCreateViewModel, ContentCategory>, ContentCategoryCreateMapper>();
+            services.AddScoped<IEnumerableViewModelMapper<IEnumerable<ContentCategory>, IEnumerable<ContentCategoryReadListViewModel>>, ContentCategoryListReadMapper>();
+            services.AddScoped<IViewModelMapper<ContentCategoryUpdateViewModel, ContentCategory>, ContentCategoryUpdateMapper>();
         }
     }
 }

@@ -9,13 +9,6 @@ namespace Application.Services
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(LoggerManager));
 
-        //public LoggerManager()
-        //{
-        //    var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-        //    XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
-        //    _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        //}
-
         public void LogDebug(string message) => _logger.Debug(message);
 
         public void LogError(string message) => _logger.Error(message);
