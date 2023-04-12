@@ -92,6 +92,7 @@ namespace Application.Services
             var content = await _contentRepository.GetByIdAsync(id,
                 includeProperties: "Content_Actors.Actor,Content_Genres.Genre,ContentCategory");
 
+            
             if (content == null)
             {
                 _loggerManager.LogError($"Getting content {id} error. Content is null");

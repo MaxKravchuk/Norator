@@ -18,6 +18,7 @@ namespace WebApi.AutoMapper.UserAutoMappers.Helpers
                 Id = x.ContentId,
                 Name = x.Content.Name,
                 ContentCategory = x.Content.ContentCategory.Name,
+                ReleaseDate = x.Content.ReleaseDate,
             });
             return userContentVM;
         }
