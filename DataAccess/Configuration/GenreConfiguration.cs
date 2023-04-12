@@ -21,6 +21,10 @@ namespace DataAccess.Configuration
                 .Property(x => x.Name)
                 .HasMaxLength(32)
                 .IsRequired();
+
+            builder
+                .HasIndex(x => x.Name)
+                .IsUnique();
         }
     }
 }
