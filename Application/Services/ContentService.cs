@@ -19,6 +19,7 @@ namespace Application.Services
     public class ContentService : IContenService
     {
         private readonly IContentRepository _contentRepository;
+        private readonly IContentCategoryRepository _categoryRepository;
         private readonly IActorService _actorService;
         private readonly IGenreService _genreService;
         private readonly IContent_GenreRepository _content_GenreRepository;
@@ -27,6 +28,7 @@ namespace Application.Services
 
         public ContentService(
             IContentRepository contentRepository,
+            IContentCategoryRepository categoryRepository,
             IActorService actorService,
             IGenreService genreService,
             IContent_GenreRepository content_GenreRepository,
@@ -34,6 +36,7 @@ namespace Application.Services
             ILoggerManager loggerManager)
         {
             _contentRepository = contentRepository;
+            _categoryRepository = categoryRepository;
             _actorService = actorService;
             _genreService = genreService;
             _content_ActorRepository = content_ActorRepository;
@@ -43,6 +46,10 @@ namespace Application.Services
 
         public async Task CreateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId)
         {
+            if(actorsId.Count() > 10)
+            {
+                throw new BadRequestException("Maximus 10 actors per content");
+            }
             foreach (var actorId in actorsId)
             {
                 content.Content_Actors.Add(new Content_Actor()
@@ -120,6 +127,10 @@ namespace Application.Services
 
         public async Task UpdateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId)
         {
+            if (actorsId.Count() > 10)
+            {
+                throw new BadRequestException("Maximus 10 actors per content");
+            }
             try
             {
                 await UpdateContentPropertiesAsync(content.Id, actorsId, genresId);
@@ -150,7 +161,20 @@ namespace Application.Services
             _loggerManager.LogInfo("Getted top 20 content");
 
             return top;
-        } 
+        }
+
+        public async Task<IEnumerable<Content>> GetTop20ContentByCategoryAsync(int catId)
+        {
+            var catogory = await _categoryRepository.GetByIdAsync(catId);
+            var contents = await _contentRepository.GetAsync(
+                filter: c => c.ContentCategory.Id == catId,
+                orderBy: con => con.OrderByDescending(x => x.NumberOfSubscribers), includeProperties: "ContentCategory");
+            var top = contents.Take(20);
+
+            _loggerManager.LogInfo("Getted top 20 content by category");
+
+            return top;
+        }
 
         private async Task UpdateContentPropertiesAsync(int contentId, IEnumerable<int> actorsId, IEnumerable<int> genresId)
         {

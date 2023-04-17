@@ -86,5 +86,13 @@ namespace WebApi.Controllers
             var viewModels = _readListMapper.Map(contents);
             return viewModels;
         }
+
+        [HttpGet("gettop20/{categoryId:int:min(1)}")]
+        public async Task<IEnumerable<ContentListReadViewModel>> GetTop20Async([FromRoute] int categoryId)
+        {
+            var contents = await _contenService.GetTop20ContentByCategoryAsync(categoryId);
+            var viewModels = _readListMapper.Map(contents);
+            return viewModels;
+        }
     }
 }
