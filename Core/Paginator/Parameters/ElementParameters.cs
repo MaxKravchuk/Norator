@@ -19,7 +19,7 @@ namespace Core.Paginator.Parameters
             }
             set
             {
-                _pageSize = value > maxPageSize ? maxPageSize : value;
+                _pageSize = value;
             }
         }
     }
