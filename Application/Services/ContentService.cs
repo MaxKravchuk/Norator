@@ -19,7 +19,7 @@ namespace Application.Services
     public class ContentService : IContenService
     {
         private readonly IContentRepository _contentRepository;
-        private readonly IContentCategoryRepository _categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IActorService _actorService;
         private readonly IGenreService _genreService;
         private readonly IContent_GenreRepository _content_GenreRepository;
@@ -28,7 +28,7 @@ namespace Application.Services
 
         public ContentService(
             IContentRepository contentRepository,
-            IContentCategoryRepository categoryRepository,
+            ICategoryRepository categoryRepository,
             IActorService actorService,
             IGenreService genreService,
             IContent_GenreRepository content_GenreRepository,
@@ -46,7 +46,7 @@ namespace Application.Services
 
         public async Task CreateContentAsync(Content content, IEnumerable<int> actorsId, IEnumerable<int> genresId)
         {
-            if(actorsId.Count() > 10)
+            if (actorsId.Count() > 10)
             {
                 throw new BadRequestException("Maximus 10 actors per content");
             }
@@ -68,30 +68,17 @@ namespace Application.Services
             }
 
             await _contentRepository.InsertAsync(content);
-            try
-            {
-                await _contentRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Adding content {content.Name} successful");
-            }
-            catch (Exception ex)
-            {
-                _loggerManager.LogError($"Adding content {content.Name} error {ex.Message}");
-            }
+            await _contentRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Adding content {content.Name} successful");
         }
 
         public async Task DeleteContentAsync(int id)
         {
             var contenttoDelete = await GetContentByIdAsync(id);
             _contentRepository.Delete(contenttoDelete);
-            try
-            {
-                await _contentRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Deleting content {id} successful");
-            }
-            catch (Exception ex)
-            {
-                _loggerManager.LogError($"Deleting content {id} error {ex.Message}");
-            }
+            await _contentRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Deleting content {id} successful");
+
         }
 
         public async Task<Content> GetContentByIdAsync(int id)
@@ -99,7 +86,7 @@ namespace Application.Services
             var content = await _contentRepository.GetByIdAsync(id,
                 includeProperties: "Content_Actors.Actor,Content_Genres.Genre,ContentCategory");
 
-            
+
             if (content == null)
             {
                 _loggerManager.LogError($"Getting content {id} error. Content is null");
@@ -119,7 +106,7 @@ namespace Application.Services
                 filter: filterQuery,
                 includeProperties: q => q
                 .Include(c => c.ContentCategory));
-            
+
             _loggerManager.LogInfo($"Getting content array {contents.Count}");
 
             return contents;
@@ -131,31 +118,17 @@ namespace Application.Services
             {
                 throw new BadRequestException("Maximus 10 actors per content");
             }
-            try
-            {
-                await UpdateContentPropertiesAsync(content.Id, actorsId, genresId);
-                _loggerManager.LogInfo($"Updated content`s properties successful");
-            }
-            catch (Exception ex)
-            {
-                _loggerManager.LogError($"Failed to update content`s properties: {ex.Message}");
-                throw new BadRequestException();
-            }
+            await UpdateContentPropertiesAsync(content.Id, actorsId, genresId);
+            _loggerManager.LogInfo($"Updated content`s properties successful");
+
             _contentRepository.Update(content);
-            try
-            {
-                await _contentRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Updated content successful");
-            }
-            catch(Exception ex)
-            {
-                _loggerManager.LogError($"Failed to update content: {ex.Message}");
-            }
+            await _contentRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Updated content successful");
         }
 
         public async Task<IEnumerable<Content>> GetTop20ContentAsync()
         {
-            var contents = await _contentRepository.GetAsync(orderBy: con => con.OrderByDescending(x => x.NumberOfSubscribers), includeProperties:"ContentCategory");
+            var contents = await _contentRepository.GetAsync(orderBy: con => con.OrderByDescending(x => x.NumberOfSubscribers), includeProperties: "ContentCategory");
             var top = contents.Take(20);
 
             _loggerManager.LogInfo("Getted top 20 content");
@@ -227,7 +200,7 @@ namespace Application.Services
 
                 filterQuery = u => u.Name!.ToLower().Contains(formatedFilter);
             }
-            else if(ActorName is not null)
+            else if (ActorName is not null)
             {
                 string ActorNameT = ActorName.Trim().ToLower();
 

@@ -62,8 +62,11 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task CreateContent([FromBody] ContentCreateViewModel viewModel)
         {
-            var content = _createMapper.Map(viewModel);
-            await _contenService.CreateContentAsync(content, viewModel.Actors, viewModel.Genres);
+            if (ModelState.IsValid)
+            {
+                var content = _createMapper.Map(viewModel);
+                await _contenService.CreateContentAsync(content, viewModel.Actors, viewModel.Genres);
+            }
         }
 
         [HttpDelete("{id:int:min(1)}")]
@@ -75,8 +78,11 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task UpdateAsync([FromBody] ContentUpdateViewModel newContent)
         {
-            var updatedContent = _updateMapper.Map(newContent);
-            await _contenService.UpdateContentAsync(updatedContent, newContent.actorsId, newContent.genresId);
+            if (ModelState.IsValid)
+            {
+                var updatedContent = _updateMapper.Map(newContent);
+                await _contenService.UpdateContentAsync(updatedContent, newContent.actorsId, newContent.genresId);
+            }
         }
 
         [HttpGet("gettop20")]

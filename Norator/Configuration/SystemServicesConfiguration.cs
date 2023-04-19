@@ -1,7 +1,7 @@
 ﻿using Application.Services;
 using Core.Interfaces.Services;
 using FluentValidation.AspNetCore;
-using WebApi.Validators;
+using WebApi.Validators.ActorValidators;
 
 namespace Norator.Configuration
 {
@@ -13,7 +13,7 @@ namespace Norator.Configuration
 
             services.AddFluentValidation(fv =>
             {
-                fv.RegisterValidatorsFromAssemblyContaining<ActorValidator>();
+                fv.RegisterValidatorsFromAssemblyContaining<CreateActorValidator>();
             });
 
             services.AddCors(options =>

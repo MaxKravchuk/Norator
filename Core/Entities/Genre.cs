@@ -9,7 +9,7 @@ namespace Core.Entities
     public class Genre
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<Content_Genre> Content_Genres { get; set; }
+        public string? Name { get; set; }
+        public ICollection<Content_Genre>? Content_Genres { get; set; }
     }
 }

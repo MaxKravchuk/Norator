@@ -46,15 +46,21 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task CreateGenreAsync([FromBody] GenreCreateViewModel genreCreateViewModel)
         {
-            var genre = _genreCreateMapper.Map(genreCreateViewModel);
-            await _genreService.CreateGenreAsync(genre);
+            if (ModelState.IsValid)
+            {
+                var genre = _genreCreateMapper.Map(genreCreateViewModel);
+                await _genreService.CreateGenreAsync(genre);
+            }
         }
 
         [HttpPut()]
         public async Task UpdateAsync([FromBody] GenreUpdateViewModel genreUpdateViewModel)
         {
-            var newGenre = _genreUpdateMapper.Map(genreUpdateViewModel);
-            await _genreService.UpdateGenreAsync(newGenre);
+            if(ModelState.IsValid)
+            {
+                var newGenre = _genreUpdateMapper.Map(genreUpdateViewModel);
+                await _genreService.UpdateGenreAsync(newGenre);
+            }
         }
 
         [HttpDelete("{id:int:min(1)}")]

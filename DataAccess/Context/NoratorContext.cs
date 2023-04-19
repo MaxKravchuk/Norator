@@ -18,8 +18,6 @@ namespace DataAccess.Context
         public DbSet<Genre> Genres { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<User_Content> UserContents { get; set; }
-        public DbSet<ExceptionEntity> Exceptions { get; set; }
-
         public NoratorContext(DbContextOptions<NoratorContext> options) : base(options) 
         {}
 

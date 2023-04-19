@@ -11,13 +11,7 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Repositories
 {
-    public interface ICategoryRepository : IPagedRepository<ContentCategory, CategoryParameters>
+    public interface ICategoryRepository : IRepository<ContentCategory>
     {
-        /*
-        Task<PagedList<Actor>> GetAllAsync(
-            ActorParameters parameters,
-            Expression<Func<Actor, bool>>? filter = null,
-            Func<IQueryable<Actor>, IOrderedQueryable<Actor>>? orderBy = null,
-            Func<IQueryable<Actor>, IIncludableQueryable<Actor, object>>? includeProperties = null);*/
     }
 }

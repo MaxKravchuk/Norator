@@ -9,8 +9,8 @@ namespace Core.Entities
     public class Content_Actor
     {
         public int ContentId { get; set; }
-        public Content Content { get; set; }
+        public Content? Content { get; set; }
         public int ActorId { get; set; }
-        public Actor Actor { get; set; }
+        public Actor? Actor { get; set; }
     }
 }

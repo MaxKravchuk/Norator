@@ -1,4 +1,5 @@
-﻿using Core.ViewModels.ActorViewModels;
+﻿using Core.Entities;
+using Core.ViewModels.ActorViewModels;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -6,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApi.Validators
+namespace WebApi.Validators.ActorValidators
 {
-    public class ActorValidator : AbstractValidator<ActorViewModel>
+    public class CreateActorValidator : AbstractValidator<ActorCreateViewModel>
     {
-        public ActorValidator()
+        public CreateActorValidator()
         {
             RuleFor(vm => vm.Name)
                 .MinimumLength(3)
@@ -20,7 +21,7 @@ namespace WebApi.Validators
 
             RuleFor(vm => vm.DateOfBirth)
                 .Must(BeBornNotInThisYear)
-                .WithMessage("You must be older 18");
+                .WithMessage("You must be older than today");
         }
 
         private bool BeBornNotInThisYear(DateTime? date)

@@ -10,7 +10,7 @@ namespace Core.ViewModels.UserViewModels
     public class UserReadViewModel : UserViewModel
     {
         public int Id { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public IEnumerable<ContentListReadViewModel> contentViewModels { get; set; } = new List<ContentListReadViewModel>();
     }
 }

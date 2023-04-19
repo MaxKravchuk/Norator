@@ -28,16 +28,9 @@ namespace Application.Services
 
         public async Task CreateActorAsync(Actor actor)
         {
-            try
-            {
-                await _actorRepository.InsertAsync(actor);
-                await _actorRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Adding actor {actor.Name} successful");
-            }
-            catch
-            {
-                _loggerManager.LogError("$Adding actor {actor.Name} error");
-            }
+            await _actorRepository.InsertAsync(actor);
+            await _actorRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Adding actor {actor.Name} successful");
         }
 
         public async Task DeleteActorAsync(int id)
@@ -69,7 +62,7 @@ namespace Application.Services
                 parameters: actorParameters,
                 filter: filterQuery,
                 includeProperties: q => q
-                .Include(a => a.Content_Actors));
+                .Include(a => a.Content_Actors!));
 
             _loggerManager.LogInfo($"Getting {actors.Count} actors");
 
@@ -79,17 +72,11 @@ namespace Application.Services
 
         public async Task UpdateActorAsync(Actor actor)
         {
-            try
-            {
-                _actorRepository.Update(actor);
-                await _actorRepository.SaveChangesAsync();
-                _loggerManager.LogError($"Updating actor {actor.Name} successful");
-            }
-            catch
-            {
-                _loggerManager.LogError($"Updating actor {actor.Name} error");
-            }
+            _actorRepository.Update(actor);
+            await _actorRepository.SaveChangesAsync();
+            _loggerManager.LogError($"Updating actor {actor.Name} successful");
         }
+
         private static Expression<Func<Actor, bool>>? GetFilterQuery(string? filterParam)
         {
             Expression<Func<Actor, bool>>? filterQuery = null;

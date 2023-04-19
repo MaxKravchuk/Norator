@@ -22,7 +22,7 @@ namespace Application.Test
         private readonly Mock<IContentRepository> _contentRepositoryMock;
         private readonly Mock<ILoggerManager> _loggerManagerMock;
         private readonly ContentService _contentService;
-        private readonly Mock<IContentCategoryRepository> _categoryRepositoryMock;
+        private readonly Mock<ICategoryRepository> _categoryRepositoryMock;
         private readonly Mock<IActorService> _actorServiceMock;
         private readonly Mock<IGenreService> _genreServiceMock;
         private readonly Mock<IContent_GenreRepository> _content_GenreRepositoryMock;
@@ -32,7 +32,7 @@ namespace Application.Test
         {
             _contentRepositoryMock = new Mock<IContentRepository>();
             _loggerManagerMock = new Mock<ILoggerManager>();
-            _categoryRepositoryMock = new Mock<IContentCategoryRepository>();
+            _categoryRepositoryMock = new Mock<ICategoryRepository>();
             _actorServiceMock = new Mock<IActorService>();
             _genreServiceMock = new Mock<IGenreService>();
             _content_GenreRepositoryMock = new Mock<IContent_GenreRepository>();

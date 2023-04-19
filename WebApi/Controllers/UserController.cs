@@ -64,16 +64,23 @@ namespace WebApi.Controllers
         [HttpPost("createUser")]
         public async Task<int> CreateUser([FromBody] UserCreateViewModel viewModel)
         {
-            var user = _createMapper.Map(viewModel);
-            var id = await _userService.CreateUserAsync(user);
-            return id;
+            if(ModelState.IsValid)
+            {
+                var user = _createMapper.Map(viewModel);
+                var id = await _userService.CreateUserAsync(user);
+                return id;
+            }
+            else { return 0; }
         }
 
         [HttpPut]
         public async Task UpdateUser([FromBody] UserUpdateViewModel viewModel)
         {
-            var user = _updateMapper.Map(viewModel);
-            await _userService.UpdateUserAsync(user);
+            if(ModelState.IsValid)
+            {
+                var user = _updateMapper.Map(viewModel);
+                await _userService.UpdateUserAsync(user);
+            }
         }
 
         [HttpDelete("{id:int:min(1)}")]
@@ -97,9 +104,13 @@ namespace WebApi.Controllers
         [HttpGet("login")]
         public async Task<UserReadListViewModel> LogIn([FromQuery] UserLogInViewModel userLogIn)
         {
-            var user = await _userService.LogInAsync(userLogIn);
-            var viewModel = _logInMapper.Map(user);
-            return viewModel;
+            if (ModelState.IsValid)
+            {
+                var user = await _userService.LogInAsync(userLogIn);
+                var viewModel = _logInMapper.Map(user);
+                return viewModel;
+            }
+            else { return null; }
         }
     }
 }

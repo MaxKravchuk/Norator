@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Exceptions;
+using Core.Interfaces.Services;
 using Core.Models;
 using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
@@ -10,16 +11,14 @@ namespace Norator.Middleware
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IServiceProvider _serviceProvider;
-
-        private static DateTime _dateTime { get; } = DateTime.Now;
+        private readonly ILoggerManager _loggerManager;
 
         public ExceptionMiddleware(
             RequestDelegate next,
-            IServiceProvider serviceProvider)
+            ILoggerManager loggerManager)
         {
+            _loggerManager = loggerManager;
             _next = next;
-            _serviceProvider = serviceProvider;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -30,107 +29,73 @@ namespace Norator.Middleware
             }
             catch (UnauthorizedException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.Unauthorized,
                    $"{ex.Message}. Path:{context.Request.Path}.");
             }
             catch (NotFoundException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.NotFound,
                     $"{ex.Message}. Path:{context.Request.Path}.");
             }
             catch (ForbidException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.Forbidden,
                    $"{ex.Message}. Path:{context.Request.Path}.");
             }
             catch (BadRequestException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.BadRequest,
                    $"{ex.Message}. Path:{context.Request.Path}.");
             }
             catch (DivideByZeroException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
                     $"{ex.Message}. Path:{context.Request.Path}.");
             }
             catch (HttpRequestException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
                    $"{ex.Message}. Path:{context.Request.Path}.");
             }
 
             catch (DbUpdateConcurrencyException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
                    $"{ex.Message}. Path:{context.Request.Path}.");
             }
 
             catch (DbUpdateException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
                     $"{ex.Message}. Path:{context.Request.Path}.");
             }
 
             catch (RouteCreationException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
                    $"{ex.Message}. Path:{context.Request.Path}.");
             }
 
             catch (KeyNotFoundException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
                     $"{ex.Message}. Path:{context.Request.Path}.");
             }
             catch (WebException ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
                     $"{ex.Message}. Path:{context.Request.Path}.");
             }
             catch (Exception ex)
             {
-                await AddExceptionAsync(ex, context, ex.GetType().Name);
-
                 await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,
                    $"{ex.Message}. Path:{context.Request.Path}.");
-
-            }
-        }
-
-        private async Task AddExceptionAsync(Exception ex, HttpContext context, string exceptionType)
-        {
-            using (var serviceScope = _serviceProvider.CreateScope())
-            {
-                var dataContext = serviceScope.ServiceProvider.GetService<NoratorContext>();
-                dataContext!.Add(new ExceptionEntity(exceptionType, _dateTime, ex.StackTrace ?? string.Empty, context.Request.Path));
-                await dataContext!.SaveChangesAsync();
             }
         }
 
         private Task HandleExceptionAsync(HttpContext context, HttpStatusCode errorCode, string errorMessage)
         {
+            _loggerManager.LogWarn(errorMessage);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)errorCode;
             return context.Response.WriteAsync(new ErrorDetails
@@ -139,7 +104,5 @@ namespace Norator.Middleware
                 Message = errorMessage
             }.ToString());
         }
-
-
     }
 }

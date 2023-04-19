@@ -10,11 +10,11 @@ namespace Core.Entities
     public class User
     {
         public int Id { get; set; }
-        public string NickName { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public string Password { get; set; }
+        public string? NickName { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string? Password { get; set; }
         public UserType UserType { get; set; }
 
-        public ICollection<User_Content> User_Contents { get; set; } = new List<User_Content>();
+        public ICollection<User_Content>? User_Contents { get; set; } = new List<User_Content>();
     }
 }

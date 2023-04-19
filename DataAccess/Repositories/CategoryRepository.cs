@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class ContentCategoryRepository : Repository<ContentCategory>, IContentCategoryRepository
+    public class CategoryRepository : Repository<ContentCategory>, ICategoryRepository
     {
-        public ContentCategoryRepository(NoratorContext noratorContext) : base(noratorContext)
+        public CategoryRepository(NoratorContext noratorContext) : base(noratorContext)
         {
         }
     }

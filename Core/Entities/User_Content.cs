@@ -9,8 +9,8 @@ namespace Core.Entities
     public class User_Content
     {
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
         public int ContentId { get; set; }
-        public Content Content { get; set; }
+        public Content? Content { get; set; }
     }
 }

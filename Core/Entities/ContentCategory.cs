@@ -9,7 +9,7 @@ namespace Core.Entities
     public class ContentCategory
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<Content> Contents { get; set; }
+        public string? Name { get; set; }
+        public ICollection<Content>? Contents { get; set; }
     }
 }

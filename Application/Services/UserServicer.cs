@@ -38,58 +38,38 @@ namespace Application.Services
 
         public async Task AddContent(int userId, int contentId)
         {
-            try
-            {
-                var user = await GetUserByIdAsync(userId);
+            var user = await GetUserByIdAsync(userId);
 
-                user.User_Contents.Add(new User_Content()
-                {
-                    Content = await _contenService.GetContentByIdAsync(contentId),
-                    User = user
-                });
-
-                await _userRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Content {contentId} successful added to user {userId}");
-            }
-            catch
+            user.User_Contents.Add(new User_Content()
             {
-                _loggerManager.LogError($"Content {contentId} doesn`t not added to user {userId}");
-            }
+                Content = await _contenService.GetContentByIdAsync(contentId),
+                User = user
+            });
+
+            await _userRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Content {contentId} successful added to user {userId}");
         }
 
         public async Task DeleteContent(int userId, int contentId)
         {
-            try
+            var content = await _user_ContentRepository.GetUserContentByUserAndContentId(userId, contentId);
+            if (content == null)
             {
-                var content = await _user_ContentRepository.GetUserContentByUserAndContentId(userId, contentId);
-                if (content == null)
-                {
-                    throw new NotFoundException();
-                }
-                _user_ContentRepository.Delete(content);
-                await _user_ContentRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Content {contentId} successful deleted to user {userId}");
+                throw new NotFoundException();
             }
-            catch
-            {
-                _loggerManager.LogError($"Content {contentId} doesn`t not deleted to user {userId}");
-            }
-
+            _user_ContentRepository.Delete(content);
+            await _user_ContentRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Content {contentId} successful deleted to user {userId}");
         }
 
         public async Task<int> CreateUserAsync(User user)
         {
             user.UserType = Core.Enums.UserType.Client;
             await _userRepository.InsertAsync(user);
-            try
-            {
-                await _userRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Created user successfuly: {user.NickName}");
-            }
-            catch
-            {
-                _loggerManager.LogError($"Created user with error: {user.NickName}");
-            }
+
+            await _userRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Created user successfuly: {user.NickName}");
+
             var id = user.Id;
             return id;
         }
@@ -98,15 +78,8 @@ namespace Application.Services
         {
             var userToDelete = await GetUserByIdAsync(id);
             _userRepository.Delete(userToDelete);
-            try
-            {
-                await _userRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"User {id} deleted");
-            }
-            catch
-            {
-                _loggerManager.LogError($"Error in delete action");
-            }
+            await _userRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"User {id} deleted");
         }
 
         public async Task<PagedList<User>> GetUsersAsync(UserParameters userParameters)
@@ -116,9 +89,9 @@ namespace Application.Services
             var users = await _userRepository.GetAllAsync(
                 userParameters,
                 filterQuery);
-            
+
             _loggerManager.LogInfo($"Fetched {users.Count} users");
-            
+
             return users;
         }
 
@@ -139,15 +112,8 @@ namespace Application.Services
         public async Task UpdateUserAsync(User user)
         {
             _userRepository.Update(user);
-            try
-            {
-                await _userRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Updated user: {user.Id}");
-            }
-            catch
-            {
-                _loggerManager.LogError($"Updating user: {user.Id} error");
-            }
+            await _userRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Updated user: {user.Id}");
         }
 
         public async Task<User> LogInAsync(UserLogInViewModel model)

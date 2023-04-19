@@ -18,7 +18,7 @@ namespace Application.Configuration
             services.AddScoped<IContenService, ContentService>();
             services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IContentCategoryService, ContentCategoryService>();
+            services.AddScoped<ICategoryService, CategoryService>();
         }
     }
 }

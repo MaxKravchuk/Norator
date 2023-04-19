@@ -26,15 +26,8 @@ namespace Application.Services
         public async Task CreateGenreAsync(Genre genre)
         {
             await _genreRepository.InsertAsync(genre);
-            try
-            {
-                await _genreRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Genre {genre.Name} created successfully");
-            }
-            catch (Exception e)
-            {
-                _loggerManager.LogError($"Creating error. An error {e.Message} appears during insertion");
-            }
+            await _genreRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Genre {genre.Name} created successfully");
         }
 
         public async Task DeleteGenreAsync(int id)
@@ -42,15 +35,8 @@ namespace Application.Services
             var genretoDelete = await GetGenreByIdAsync(id);
 
             _genreRepository.Delete(genretoDelete);
-            try
-            {
-                await _genreRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Genre with id {id} deleted successfully");
-            }
-            catch (Exception e)
-            {
-                _loggerManager.LogError($"Deleting error. Error msg - {e.Message}");
-            }
+            await _genreRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Genre with id {id} deleted successfully");
         }
 
         public async Task<PagedList<Genre>> GetGenreAsync(GenreParameters genreParameters)
@@ -78,15 +64,8 @@ namespace Application.Services
         public async Task UpdateGenreAsync(Genre genre)
         {
             _genreRepository.Update(genre);
-            try
-            {
-                await _genreRepository.SaveChangesAsync();
-                _loggerManager.LogInfo($"Genre with id {genre.Id} updated successfully");
-            }
-            catch(Exception e)
-            {
-                _loggerManager.LogError($"Updating error for genre {genre.Id}. An error msg - {e.Message}");
-            }
+            await _genreRepository.SaveChangesAsync();
+            _loggerManager.LogInfo($"Genre with id {genre.Id} updated successfully");
         }
     }
 }

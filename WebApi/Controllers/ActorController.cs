@@ -5,6 +5,7 @@ using Core.Paginator.Parameters;
 using Core.ViewModels;
 using Core.ViewModels.ActorViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,15 +60,21 @@ namespace WebApi.Controllers
         [HttpPost("create")]
         public async Task CreateAsync([FromBody] ActorCreateViewModel actorVM)
         {
-            var actorToCreate = _actorCreateVM.Map(actorVM);
-            await _actorService.CreateActorAsync(actorToCreate);
+            if(ModelState.IsValid)
+            {
+                var actorToCreate = _actorCreateVM.Map(actorVM);
+                await _actorService.CreateActorAsync(actorToCreate);
+            }
         }
 
         [HttpPut("update")]
         public async Task UpdateAsync([FromBody] ActorUpdateViewModel actorVM)
         {
-            var actorToUpdate = _actorUpdateVM.Map(actorVM);
-            await _actorService.UpdateActorAsync(actorToUpdate);
+            if (ModelState.IsValid)
+            {
+                var actorToUpdate = _actorUpdateVM.Map(actorVM);
+                await _actorService.UpdateActorAsync(actorToUpdate);
+            }
         }
 
         [HttpDelete("{id:int:min(1)}")]

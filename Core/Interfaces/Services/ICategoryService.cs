@@ -11,10 +11,6 @@ namespace Core.Interfaces.Services
 {
     public interface ICategoryService
     {
-        Task<ContentCategory> GetCategoryByIdAsync(int id);
-        Task<PagedList<ContentCategory>> GetCategoryAsync(CategoryParameters categoryParameters);
-        Task CreateCategoryAsync(ContentCategory actor);
-        Task UpdateCategoryAsync(ContentCategory actor);
-        Task DeleteCategoryAsync(int id);
+        Task<IEnumerable<ContentCategory>> GetCategoryAsync();
     }
 }
