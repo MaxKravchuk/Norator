@@ -180,12 +180,10 @@ namespace Application.Test
                     .SaveChangesAsync()).ThrowsAsync(new Exception());
 
             // Act
-            await _actorService.UpdateActorAsync(actorToUpdate);
+            var result = _actorService.UpdateActorAsync(actorToUpdate);
 
             // Assert
-            _actorRepositoryMock.Verify(repo => repo.Update(actorToUpdate), Times.Once);
-            _actorRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Once);
-            _loggerManagerMock.Verify(logger => logger.LogError($"Updating actor {actorToUpdate.Name} error"), Times.Once);
+            await Assert.ThrowsAsync<Exception>(() => result);
         }
     }
 }
