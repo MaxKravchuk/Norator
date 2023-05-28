@@ -166,7 +166,7 @@ namespace Application.Services
                 string Fpasswd = passwd.Trim().ToLower();
 
 
-                filterQuery = u => u.NickName!.ToLower().Contains(Fnick) && u.Password!.ToLower().Contains(Fpasswd);
+                filterQuery = u => u.NickName!.ToLower()==(Fnick) && u.Password!.ToLower()==(Fpasswd);
             }
 
             return filterQuery;
