@@ -28,7 +28,5 @@ namespace DataAccess.Context
             builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
             builder.SeedData();
         }
-
-
     }
 }

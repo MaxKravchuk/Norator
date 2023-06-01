@@ -20,6 +20,7 @@ namespace Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IContentRepository _contentRepository;
         private readonly IContenService _contenService;
         private readonly IUser_ContentRepository _user_ContentRepository;
         private readonly ILoggerManager _loggerManager;
@@ -28,36 +29,46 @@ namespace Application.Services
             IUserRepository userRepository,
             IContenService contenService,
             IUser_ContentRepository user_ContentRepository,
-            ILoggerManager loggerManager)
+            ILoggerManager loggerManager,
+            IContentRepository contentRepository)
         {
             _userRepository = userRepository;
             _contenService = contenService;
             _user_ContentRepository = user_ContentRepository;
             _loggerManager = loggerManager;
+            _contentRepository = contentRepository;
         }
 
         public async Task AddContent(int userId, int contentId)
         {
             var user = await GetUserByIdAsync(userId);
+            var content = await _contentRepository.GetByIdAsync(contentId);
 
             user.User_Contents.Add(new User_Content()
             {
-                Content = await _contenService.GetContentByIdAsync(contentId),
+                Content = content,
                 User = user
             });
-
+            content.NumberOfSubscribers += 1;
+            _contentRepository.Update(content);
+            await _contentRepository.SaveChangesAsync();
             await _userRepository.SaveChangesAsync();
             _loggerManager.LogInfo($"Content {contentId} successful added to user {userId}");
         }
 
         public async Task DeleteContent(int userId, int contentId)
         {
-            var content = await _user_ContentRepository.GetUserContentByUserAndContentId(userId, contentId);
-            if (content == null)
+            var userContent = await _user_ContentRepository.GetUserContentByUserAndContentId(userId, contentId);
+            var content = await _contentRepository.GetByIdAsync(contentId);
+            if (userContent == null)
             {
                 throw new NotFoundException();
             }
-            _user_ContentRepository.Delete(content);
+
+            content.NumberOfSubscribers -= 1;
+            _contentRepository.Update(content);
+            await _contentRepository.SaveChangesAsync();
+            _user_ContentRepository.Delete(userContent);
             await _user_ContentRepository.SaveChangesAsync();
             _loggerManager.LogInfo($"Content {contentId} successful deleted to user {userId}");
         }
