@@ -181,7 +181,7 @@ namespace DataAccess
                 new Content_Genre() { ContentId = 26, GenreId = 4 },
                 new Content_Genre() { ContentId = 27, GenreId = 2 },
                 new Content_Genre() { ContentId = 28, GenreId = 1 },
-                new Content_Genre() { ContentId = 29, GenreId = 4 },
+                
                 new Content_Genre() { ContentId = 30, GenreId = 3 },
                 new Content_Genre() { ContentId = 31, GenreId = 2 },
                 new Content_Genre() { ContentId = 32, GenreId = 1 },
