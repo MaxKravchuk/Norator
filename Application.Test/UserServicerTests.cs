@@ -19,6 +19,7 @@ namespace Application.Test
     {
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly Mock<IContenService> _contenServiceMock;
+        private readonly Mock<IContentRepository> _contentRepositoryMock;
         private readonly Mock<IUser_ContentRepository> _userContentRepositoryMock;
         private readonly Mock<ILoggerManager> _loggerManagerMock;
         private readonly UserService _userService;
@@ -29,11 +30,13 @@ namespace Application.Test
             _contenServiceMock = new Mock<IContenService>();
             _userContentRepositoryMock = new Mock<IUser_ContentRepository>();
             _loggerManagerMock = new Mock<ILoggerManager>();
+            _contentRepositoryMock = new Mock<IContentRepository>();
             _userService = new UserService(
                 _userRepositoryMock.Object,
                 _contenServiceMock.Object,
                 _userContentRepositoryMock.Object,
-                _loggerManagerMock.Object);
+                _loggerManagerMock.Object,
+                _contentRepositoryMock.Object);
         }
 
         [Fact]
