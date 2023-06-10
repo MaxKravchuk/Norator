@@ -14,6 +14,7 @@ namespace Core.ViewModels.ContentViewModels
         public string ContentCategory { get; set; }
         public IEnumerable<ContentPropsViewModel> actorsViewModels { get; set; } = new List<ContentPropsViewModel>();
         public IEnumerable<ContentPropsViewModel> genreViewModels { get; set; } = new List<ContentPropsViewModel>();
+        public int NumberOfSubscribers { get; set; }
 
     }
 }

@@ -10,5 +10,6 @@ namespace Core.ViewModels.ContentCategoryViewModels
     public class ContentCategoryReadListViewModel : ContentCategoryViewModel
     {
         public int Id { get; set; }
+        public int NumberOfSubscribers { get; set; }
     }
 }

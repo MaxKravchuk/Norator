@@ -10,5 +10,6 @@ namespace Core.ViewModels.ContentViewModels
     {
         public int Id { get; set; }
         public string? ContentCategory { get; set; }
+        public int NumberOfSubscribers { get; set; }
     }
 }
